@@ -10,7 +10,7 @@ export default function App() {
 }
 
 const TabNavigator = createBottomTabNavigator({
-  Home: HomeStack,
+  HomeStack: HomeStack,
   RouteList: RouteList,
   Settings: Settings
 });
