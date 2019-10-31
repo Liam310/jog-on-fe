@@ -43,12 +43,6 @@ export default class RouteList extends React.Component {
             </TouchableHighlight>
           );
         })}
-        <Button
-          title="BUTTON"
-          onPress={() => {
-            navigation.navigate('Home', { route: 'yay' });
-          }}
-        ></Button>
       </View>
     );
   }
