@@ -4,15 +4,17 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 class HomeScreen extends React.Component {
   render() {
+    const { navigation } = this.props;
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>Home</Text>
         <Button
           title="Go to q1"
           onPress={() => {
-            this.props.navigation.navigate('FirstQuestion');
+            navigation.navigate('FirstQuestion');
           }}
         />
+        <Text>route: {navigation.getParam('route', 'no route')}</Text>
       </View>
     );
   }
