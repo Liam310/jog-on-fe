@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Button } from 'react-native';
+import { Text, TextInput, View, Button } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 
 class HomeScreen extends React.Component {
@@ -34,7 +34,7 @@ class HomeScreen extends React.Component {
       currentState => {
         return {
           gettingLocation: !currentState.gettingLocation,
-          actualRoute: 'my amazing route'
+          actualRoute: 'list of coordinates!'
         };
       },
       () => {
@@ -49,6 +49,9 @@ class HomeScreen extends React.Component {
 }
 
 class FirstQuestionScreen extends React.Component {
+  state = {
+    flags: []
+  };
   render() {
     const { navigation } = this.props;
     return (
@@ -59,16 +62,31 @@ class FirstQuestionScreen extends React.Component {
           title="Go to q2"
           onPress={() => {
             this.props.navigation.navigate('SecondQuestion', {
-              actualRoute: navigation.getParam('actualRoute')
+              actualRoute: navigation.getParam('actualRoute'),
+              flags: this.state.flags
             });
           }}
         />
+        <Button
+          title="Add mud flag"
+          onPress={() => {
+            this.setState(currentState => {
+              return { flags: [...currentState.flags, 'mud'] };
+            });
+          }}
+        />
+        {this.state.flags.map((flag, index) => {
+          return <Text key={index}>{flag} </Text>;
+        })}
       </View>
     );
   }
 }
 
 class SecondQuestionScreen extends React.Component {
+  state = {
+    flags: []
+  };
   render() {
     const { navigation } = this.props;
     return (
@@ -78,27 +96,111 @@ class SecondQuestionScreen extends React.Component {
         <Button
           title="Go to q3"
           onPress={() => {
-            this.props.navigation.navigate('ThirdQuestion');
+            this.props.navigation.navigate('ThirdQuestion', {
+              actualRoute: navigation.getParam('actualRoute'),
+              flags: this.state.flags
+            });
           }}
         />
+        <Button
+          title="Add light flag"
+          onPress={() => {
+            this.setState(currentState => {
+              return { flags: [...currentState.flags, 'light'] };
+            });
+          }}
+        />
+        {this.state.flags.map((flag, index) => {
+          return <Text key={index}>{flag} </Text>;
+        })}
       </View>
     );
+  }
+
+  componentWillMount() {
+    this.setState({
+      flags: this.props.navigation.getParam('flags')
+    });
   }
 }
 
 class ThirdQuestionScreen extends React.Component {
+  state = {
+    flags: []
+  };
   render() {
+    const { navigation } = this.props;
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>Question 3!</Text>
+        <Text>route: {navigation.getParam('actualRoute', 'N/A')}</Text>
+        <Button
+          title="Name your route"
+          onPress={() => {
+            this.props.navigation.navigate('NameRoute', {
+              actualRoute: navigation.getParam('actualRoute'),
+              flags: this.state.flags
+            });
+          }}
+        />
+        <Button
+          title="Add water flag"
+          onPress={() => {
+            this.setState(currentState => {
+              return { flags: [...currentState.flags, 'water'] };
+            });
+          }}
+        />
+        {this.state.flags.map((flag, index) => {
+          return <Text key={index}>{flag} </Text>;
+        })}
+      </View>
+    );
+  }
+
+  componentWillMount() {
+    this.setState({
+      flags: this.props.navigation.getParam('flags')
+    });
+  }
+}
+
+class NameRouteScreen extends React.Component {
+  state = {
+    flags: [],
+    actualRouteName: ''
+  };
+  render() {
+    const { navigation } = this.props;
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <TextInput
+          style={{ height: 40, width: 120, justifyContent: 'flex-start' }}
+          placeholder="Name your route"
+          onChangeText={actualRouteName => this.setState({ actualRouteName })}
+          value={this.state.actualRouteName}
+        />
         <Button
           title="Submit your route"
           onPress={() => {
-            this.props.navigation.navigate('ConfirmRouteAdded');
+            this.props.navigation.navigate('ConfirmRouteAdded', {
+              actualRoute: navigation.getParam('actualRoute'),
+              actualRouteName: this.state.actualRouteName,
+              flags: this.state.flags
+            });
           }}
         />
+        {this.state.flags.map((flag, index) => {
+          return <Text key={index}>{flag} </Text>;
+        })}
       </View>
     );
+  }
+
+  componentWillMount() {
+    this.setState({
+      flags: this.props.navigation.getParam('flags')
+    });
   }
 }
 
@@ -106,7 +208,10 @@ class ConfirmRouteAddedScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Route added. Good job!</Text>
+        <Text>
+          {this.props.navigation.getParam('actualRouteName')} has been added.
+          Good job!
+        </Text>
         <Button
           title="Go back to home"
           onPress={() => {
@@ -123,6 +228,7 @@ const HomeStack = createStackNavigator({
   FirstQuestion: FirstQuestionScreen,
   SecondQuestion: SecondQuestionScreen,
   ThirdQuestion: ThirdQuestionScreen,
+  NameRoute: NameRouteScreen,
   ConfirmRouteAdded: ConfirmRouteAddedScreen
 });
 
