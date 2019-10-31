@@ -3,6 +3,11 @@ import { Text, View, Button } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 
 class HomeScreen extends React.Component {
+  state = {
+    gettingLocation: false,
+    actualRoute: null
+  };
+
   render() {
     const { navigation } = this.props;
     return (
@@ -15,20 +20,47 @@ class HomeScreen extends React.Component {
           }}
         />
         <Text>route: {navigation.getParam('route', 'no route')}</Text>
+        <Button
+          onPress={this.handlePress}
+          title={this.state.gettingLocation ? 'STOP' : 'START'}
+          color="blue"
+        />
       </View>
     );
   }
+
+  handlePress = () => {
+    this.setState(
+      currentState => {
+        return {
+          gettingLocation: !currentState.gettingLocation,
+          actualRoute: 'my amazing route'
+        };
+      },
+      () => {
+        if (!this.state.gettingLocation) {
+          this.props.navigation.navigate('FirstQuestion', {
+            actualRoute: this.state.actualRoute
+          });
+        }
+      }
+    );
+  };
 }
 
 class FirstQuestionScreen extends React.Component {
   render() {
+    const { navigation } = this.props;
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>Question 1!</Text>
+        <Text>route: {navigation.getParam('actualRoute', 'N/A')}</Text>
         <Button
           title="Go to q2"
           onPress={() => {
-            this.props.navigation.navigate('SecondQuestion');
+            this.props.navigation.navigate('SecondQuestion', {
+              actualRoute: navigation.getParam('actualRoute')
+            });
           }}
         />
       </View>
@@ -38,9 +70,11 @@ class FirstQuestionScreen extends React.Component {
 
 class SecondQuestionScreen extends React.Component {
   render() {
+    const { navigation } = this.props;
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>Question 2!</Text>
+        <Text>route: {navigation.getParam('actualRoute', 'N/A')}</Text>
         <Button
           title="Go to q3"
           onPress={() => {
