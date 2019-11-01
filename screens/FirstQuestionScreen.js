@@ -117,6 +117,8 @@ export default class FirstQuestionScreen extends React.Component {
   handleMapPress = async ({ nativeEvent: { coordinate } }) => {
     // console.log(coordinate);
     // api.postFlag(coordinate);
+
+    // MAKE FLAG OBJ TO BE POSTED
     this.setState(currentState => {
       return {
         flags: [...currentState.flags, coordinate]
