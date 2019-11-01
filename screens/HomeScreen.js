@@ -13,12 +13,20 @@ import * as Permissions from 'expo-permissions';
 
 export default class HomeScreen extends React.Component {
   state = {
+    errorMessage: null,
     gettingLocation: false,
-    actualRoute: []
+    actualRoute: [],
+    mapRegion: {
+      latitude: 53.8008,
+      longitude: -1.5491,
+      latitudeDelta: 0.0122,
+      longitudeDelta: 0.0073
+    }
   };
 
   render() {
     // const { navigation } = this.props;
+    const { mapRegion } = this.state;
     return (
       <View
         style={{
@@ -32,34 +40,21 @@ export default class HomeScreen extends React.Component {
         {/* <Text>Home</Text> */}
         {/* <Text>route: {navigation.getParam('route', 'no route')}</Text> */}
         <MapView
+          rotateEnabled={false}
           showsUserLocation={true}
-          // followsUserLocation={true}
           style={{
             width: Dimensions.get('window').width,
             // height: Dimensions.get('window').height
             flex: 1
           }}
-          initialRegion={{
-            latitude: 53.8008,
-            longitude: -1.5491,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421
-          }}
+          region={mapRegion}
           // onLongPress={this.handleMapPress}
           // onMapReady={this.handleMapReady}
-          // onRegionChangeComplete={this.handleRegionChange}
+          onRegionChangeComplete={this.handleRegionChange}
         >
           <Polyline
             coordinates={this.state.actualRoute}
             strokeColor="#000000"
-            // strokeColors={[
-            //   '#7F0000',
-            //   '#00000000',
-            //   '#B24112',
-            //   '#E5845C',
-            //   '#238C23',
-            //   '#7F0000'
-            // ]}
             strokeWidth={6}
           />
         </MapView>
@@ -112,10 +107,27 @@ export default class HomeScreen extends React.Component {
         errorMessage: 'Permission to access location was denied'
       });
     }
+
+    const initialLocation = await Location.getCurrentPositionAsync({});
+    this.setState(({ mapRegion: { latitudeDelta, longitudeDelta } }) => {
+      const { latitude, longitude } = initialLocation.coords;
+      return {
+        mapRegion: {
+          latitude,
+          longitude,
+          latitudeDelta,
+          longitudeDelta
+        }
+      };
+    });
+  };
+
+  handleRegionChange = mapRegion => {
+    this.setState({ mapRegion });
   };
 
   watchPosition = async () => {
-    this.location = await Location.watchPositionAsync(
+    this.locationUpdateWatcher = await Location.watchPositionAsync(
       { distanceInterval: 1 },
       location => {
         this.setState(currentState => {
@@ -123,7 +135,6 @@ export default class HomeScreen extends React.Component {
             latitude: location.coords.latitude,
             longitude: location.coords.longitude
           };
-          console.log(currentState.actualRoute);
           return {
             actualRoute: [...currentState.actualRoute, newLocation]
           };
@@ -143,7 +154,7 @@ export default class HomeScreen extends React.Component {
         if (this.state.gettingLocation) {
           this.watchPosition();
         } else {
-          this.location.remove();
+          this.locationUpdateWatcher.remove();
           this.props.navigation.navigate('FirstQuestion', {
             actualRoute: this.state.actualRoute
           });
