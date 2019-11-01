@@ -1,6 +1,5 @@
 import React from 'react';
-import { Text, View, Button } from 'react-native';
-import { NavigationEvents } from 'react-navigation';
+import { Text, View } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 
 export default class RouteList extends React.Component {
@@ -19,7 +18,6 @@ export default class RouteList extends React.Component {
           alignItems: 'center'
         }}
       >
-        <NavigationEvents onDidFocus={() => console.log(navigation.state)} />
         <Text>RouteList</Text>
         <Text>Units: {navigation.getParam('unit', 'km')}</Text>
         {routes.map((route, index) => {
