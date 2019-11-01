@@ -6,13 +6,16 @@ import ThirdQuestionScreen from './ThirdQuestionScreen';
 import NameRouteScreen from './NameRouteScreen';
 import ConfirmRouteAddedScreen from './ConfirmRouteAddedScreen';
 
-const HomeStack = createStackNavigator({
-  Home: HomeScreen,
-  FirstQuestion: FirstQuestionScreen,
-  SecondQuestion: SecondQuestionScreen,
-  ThirdQuestion: ThirdQuestionScreen,
-  NameRoute: NameRouteScreen,
-  ConfirmRouteAdded: ConfirmRouteAddedScreen
-});
+const HomeStack = createStackNavigator(
+  {
+    Home: HomeScreen,
+    FirstQuestion: FirstQuestionScreen,
+    SecondQuestion: SecondQuestionScreen,
+    ThirdQuestion: ThirdQuestionScreen,
+    NameRoute: NameRouteScreen,
+    ConfirmRouteAdded: ConfirmRouteAddedScreen
+  },
+  { headerMode: 'none' }
+);
 
 export default HomeStack;
