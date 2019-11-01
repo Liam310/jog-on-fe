@@ -75,7 +75,7 @@ export default class ThirdQuestionScreen extends React.Component {
           }}
         >
           <Text style={{ color: 'white', fontSize: 18 }}>
-            Press and drag on the route to place a marker, then press next to move
+            Press and hold on the route to place a marker, then press next to move
             onto the next question
           </Text>
         </View>
