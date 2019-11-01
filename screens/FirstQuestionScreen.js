@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, Dimensions, TouchableHighlight } from 'react-native';
-import MapView, { Polyline } from 'react-native-maps';
+import MapView, { Polyline, Marker } from 'react-native-maps';
 import Constants from 'expo-constants';
 
 export default class FirstQuestionScreen extends React.Component {
@@ -25,6 +25,7 @@ export default class FirstQuestionScreen extends React.Component {
             // height: Dimensions.get('window').height
             flex: 1
           }}
+          onLongPress={this.handleMapPress}
           initialRegion={{
             latitude: 53.79493492583547,
             longitude: -1.546191464587611,
@@ -39,6 +40,10 @@ export default class FirstQuestionScreen extends React.Component {
             strokeColor="#000000"
             strokeWidth={6}
           />
+          {this.state.flags.map(({ latitude, longitude }, index) => {
+            console.log(latitude, longitude);
+            return <Marker coordinate={{ latitude, longitude }} key={index} />;
+          })}
         </MapView>
         {/* <Text>Question 1!</Text>
         <Text>route: {navigation.getParam('actualRoute', [])}</Text> */}
@@ -105,18 +110,17 @@ export default class FirstQuestionScreen extends React.Component {
             <Text style={{ color: 'white', fontSize: 32 }}>></Text>
           </View>
         </TouchableHighlight>
-        {/* <Button
-          title="Add mud flag"
-          onPress={() => {
-            this.setState(currentState => {
-              return { flags: [...currentState.flags, 'mud'] };
-            });
-          }}
-        /> */}
-        {this.state.flags.map((flag, index) => {
-          return <Text key={index}>{flag} </Text>;
-        })}
       </View>
     );
   }
+
+  handleMapPress = async ({ nativeEvent: { coordinate } }) => {
+    // console.log(coordinate);
+    // api.postFlag(coordinate);
+    this.setState(currentState => {
+      return {
+        flags: [...currentState.flags, coordinate]
+      };
+    });
+  };
 }
