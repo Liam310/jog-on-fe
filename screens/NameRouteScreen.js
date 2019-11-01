@@ -6,7 +6,7 @@ import {
   Dimensions,
   TouchableHighlight
 } from 'react-native';
-import MapView, { Polyline } from 'react-native-maps';
+import MapView, { Polyline, Marker } from 'react-native-maps';
 import Constants from 'expo-constants';
 
 export default class NameRouteScreen extends React.Component {
@@ -46,6 +46,9 @@ export default class NameRouteScreen extends React.Component {
             strokeColor="#000000"
             strokeWidth={6}
           />
+          {this.state.flags.map(({ latitude, longitude }, index) => {
+            return <Marker coordinate={{ latitude, longitude }} key={index} />;
+          })}
         </MapView>
         {/* <Text>Question 1!</Text>
         <Text>route: {navigation.getParam('actualRoute', [])}</Text> */}
@@ -124,9 +127,9 @@ export default class NameRouteScreen extends React.Component {
             <Text style={{ color: 'white', fontSize: 32 }}>DONE</Text>
           </View>
         </TouchableHighlight>
-        {this.state.flags.map((flag, index) => {
+        {/* {this.state.flags.map((flag, index) => {
           return <Text key={index}>{flag} </Text>;
-        })}
+        })} */}
       </View>
     );
   }

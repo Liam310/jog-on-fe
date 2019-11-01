@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, Dimensions, TouchableHighlight } from 'react-native';
-import MapView, { Polyline } from 'react-native-maps';
+import MapView, { Polyline, Marker } from 'react-native-maps';
 import Constants from 'expo-constants';
 
 export default class ThirdQuestionScreen extends React.Component {
@@ -25,6 +25,7 @@ export default class ThirdQuestionScreen extends React.Component {
             // height: Dimensions.get('window').height
             flex: 1
           }}
+          onLongPress={this.handleMapPress}
           initialRegion={{
             latitude: 53.79493492583547,
             longitude: -1.546191464587611,
@@ -39,6 +40,9 @@ export default class ThirdQuestionScreen extends React.Component {
             strokeColor="#000000"
             strokeWidth={6}
           />
+          {this.state.flags.map(({ latitude, longitude }, index) => {
+            return <Marker coordinate={{ latitude, longitude }} key={index} />;
+          })}
         </MapView>
         {/* <Text>Question 1!</Text>
         <Text>route: {navigation.getParam('actualRoute', [])}</Text> */}
@@ -75,8 +79,8 @@ export default class ThirdQuestionScreen extends React.Component {
           }}
         >
           <Text style={{ color: 'white', fontSize: 18 }}>
-            Press and hold on the route to place a marker, then press next to move
-            onto the next question
+            Press and hold on the route to place a marker, then press next to
+            move onto the next question
           </Text>
         </View>
         <TouchableHighlight
@@ -113,9 +117,9 @@ export default class ThirdQuestionScreen extends React.Component {
             });
           }}
         /> */}
-        {this.state.flags.map((flag, index) => {
+        {/* {this.state.flags.map((flag, index) => {
           return <Text key={index}>{flag} </Text>;
-        })}
+        })} */}
       </View>
     );
   }
@@ -125,4 +129,16 @@ export default class ThirdQuestionScreen extends React.Component {
       flags: this.props.navigation.getParam('flags')
     });
   }
+
+  handleMapPress = async ({ nativeEvent: { coordinate } }) => {
+    // console.log(coordinate);
+    // api.postFlag(coordinate);
+
+    // MAKE FLAG OBJ TO BE POSTED
+    this.setState(currentState => {
+      return {
+        flags: [...currentState.flags, coordinate]
+      };
+    });
+  };
 }
