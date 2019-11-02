@@ -12,8 +12,8 @@ export const postFlags = flags => {
   });
 };
 
-export const getFlags = async () => {
-  const { data } = await request.get('/flags');
+export const getFlags = async regionQueryObj => {
+  const { data } = await request.get('/flags', { params: regionQueryObj });
   return data;
 };
 
