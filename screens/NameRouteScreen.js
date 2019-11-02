@@ -106,7 +106,6 @@ export default class NameRouteScreen extends React.Component {
               return [coord.latitude, coord.longitude];
             });
             const polyfied = polyline.encode(formattedCoords);
-            console.log(polyfied);
 
             const newRoute = {
               poly: polyfied,
