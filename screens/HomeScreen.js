@@ -11,6 +11,7 @@ import Constants from 'expo-constants';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import * as api from '../utils/api';
+import { checkSufficientRegionChange } from '../utils/utils';
 
 export default class HomeScreen extends React.Component {
   state = {
@@ -147,7 +148,10 @@ export default class HomeScreen extends React.Component {
 
   handleRegionChange = mapRegion => {
     this.setState({ mapRegion });
-    this.fetchFlags(mapRegion);
+    if (checkSufficientRegionChange(this.state.flagFetchRegion, mapRegion)) {
+      this.fetchFlags(mapRegion);
+      this.setState({ flagFetchRegion: mapRegion });
+    }
   };
 
   watchPosition = async () => {
