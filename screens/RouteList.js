@@ -17,6 +17,7 @@ export default class RouteList extends React.Component {
   render() {
     const { navigation } = this.props;
     const { routes } = this.state;
+    const distanceUnit = navigation.getParam('unit', 'km');
     return (
       <CardList
         showsVerticalScrollIndicator={false}
@@ -28,7 +29,7 @@ export default class RouteList extends React.Component {
             <RouteCard
               key={route.route_id}
               route={route}
-              distanceUnit={navigation.getParam('unit', 'km')}
+              distanceUnit={distanceUnit}
             />
           );
         })}
@@ -38,7 +39,6 @@ export default class RouteList extends React.Component {
 
   fetchRoutes = () => {
     api.getRoutes().then(routes => {
-      console.log('api call made!');
       this.setState({ routes });
     });
   };
