@@ -10,6 +10,7 @@ import MapView, { Polyline, Marker } from 'react-native-maps';
 import Constants from 'expo-constants';
 import * as api from '../utils/api';
 import * as polyline from '@mapbox/polyline';
+import flagRef from '../utils/flagRefObj';
 
 export default class NameRouteScreen extends React.Component {
   state = {
@@ -45,9 +46,17 @@ export default class NameRouteScreen extends React.Component {
             strokeColor="#000000"
             strokeWidth={6}
           />
-          {this.state.flags.map(({ latitude, longitude }, index) => {
-            return <Marker coordinate={{ latitude, longitude }} key={index} />;
-          })}
+          {this.state.flags.map(
+            ({ latitude, longitude, flag_type_id }, index) => {
+              return (
+                <Marker
+                  coordinate={{ latitude, longitude }}
+                  key={index}
+                  image={flagRef[flag_type_id]}
+                />
+              );
+            }
+          )}
         </MapView>
         <View
           style={{
