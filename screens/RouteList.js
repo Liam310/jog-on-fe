@@ -1,10 +1,13 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
+import * as api from '../utils/api';
+import { NavigationEvents } from 'react-navigation';
 
 export default class RouteList extends React.Component {
   state = {
-    routes: ['route1', 'route2', 'route3']
+    routes: []
+    // routes: ['route1', 'route2', 'route3']
   };
 
   render() {
@@ -18,15 +21,16 @@ export default class RouteList extends React.Component {
           alignItems: 'center'
         }}
       >
+        <NavigationEvents onDidFocus={this.fetchRoutes} />
         <Text>RouteList</Text>
         <Text>Units: {navigation.getParam('unit', 'km')}</Text>
         {routes.map((route, index) => {
           return (
             <TouchableHighlight
               key={index}
-              onPress={() => {
-                navigation.navigate('Home', { route: route });
-              }}
+              // onPress={() => {
+              //   navigation.navigate('Home', { route: route });
+              // }}
             >
               <View
                 style={{
@@ -36,7 +40,7 @@ export default class RouteList extends React.Component {
                   marginBottom: 10
                 }}
               >
-                <Text>{route}</Text>
+                <Text>{route.poly}</Text>
               </View>
             </TouchableHighlight>
           );
@@ -44,4 +48,11 @@ export default class RouteList extends React.Component {
       </View>
     );
   }
+
+  fetchRoutes = () => {
+    api.getRoutes().then(routes => {
+      console.log('api call made!');
+      this.setState({ routes });
+    });
+  };
 }
