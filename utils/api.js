@@ -15,3 +15,8 @@ export const postFlags = flags => {
       console.log(error);
     });
 };
+
+export const getFlags = async () => {
+  const { data } = await request.get('/flags');
+  return data;
+};
