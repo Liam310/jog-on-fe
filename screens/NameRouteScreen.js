@@ -10,6 +10,7 @@ import MapView, { Polyline, Marker } from 'react-native-maps';
 import Constants from 'expo-constants';
 import * as api from '../utils/api';
 import * as polyline from '@mapbox/polyline';
+import { getPathLength } from 'geolib';
 import flagRef from '../utils/flagRefObj';
 
 export default class NameRouteScreen extends React.Component {
@@ -109,20 +110,7 @@ export default class NameRouteScreen extends React.Component {
         </View>
         <TouchableHighlight
           onPress={() => {
-            // MAKE ROUTE OBJ
-            const actualRoute = navigation.getParam('actualRoute');
-            const formattedCoords = actualRoute.map(coord => {
-              return [coord.latitude, coord.longitude];
-            });
-            const polyfied = polyline.encode(formattedCoords);
-
-            const newRoute = {
-              poly: polyfied,
-              user_id: 1,
-              length_in_km: 5
-            };
-
-            api.postRoute(newRoute);
+            this.handleRoutePosting();
             navigation.navigate('ConfirmRouteAdded', {
               actualRouteName: this.state.actualRouteName
             });
@@ -155,4 +143,22 @@ export default class NameRouteScreen extends React.Component {
       flags: this.props.navigation.getParam('flags')
     });
   }
+
+  handleRoutePosting = () => {
+    const actualRoute = this.props.navigation.getParam('actualRoute');
+    const formattedCoords = actualRoute.map(coord => {
+      return [coord.latitude, coord.longitude];
+    });
+    const polyfied = polyline.encode(formattedCoords);
+
+    const routeLength = getPathLength(actualRoute) / 1000;
+
+    const newRoute = {
+      poly: polyfied,
+      user_id: 1,
+      length_in_km: routeLength
+    };
+
+    api.postRoute(newRoute);
+  };
 }
