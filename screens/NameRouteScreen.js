@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import MapView, { Polyline, Marker } from 'react-native-maps';
 import Constants from 'expo-constants';
+import * as api from '../utils/api';
+import * as polyline from '@mapbox/polyline';
 
 export default class NameRouteScreen extends React.Component {
   state = {
@@ -98,6 +100,21 @@ export default class NameRouteScreen extends React.Component {
         </View>
         <TouchableHighlight
           onPress={() => {
+            // MAKE ROUTE OBJ
+            const actualRoute = navigation.getParam('actualRoute');
+            const formattedCoords = actualRoute.map(coord => {
+              return [coord.latitude, coord.longitude];
+            });
+            const polyfied = polyline.encode(formattedCoords);
+            console.log(polyfied);
+
+            const newRoute = {
+              poly: polyfied,
+              user_id: 1,
+              length_in_km: 5
+            };
+
+            api.postRoute(newRoute);
             navigation.navigate('ConfirmRouteAdded', {
               actualRouteName: this.state.actualRouteName
             });
