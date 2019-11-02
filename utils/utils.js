@@ -16,7 +16,7 @@ exports.checkSufficientRegionChange = (oldRegion, newRegion) => {
 exports.convertRouteToRegion = route => {
   const { minLat, maxLat, minLng, maxLng } = getBounds(route);
   let { latitude, longitude } = getCenterOfBounds(route);
-  let latitudeDelta = (maxLat - minLat) * 1.5;
+  let latitudeDelta = (maxLat - minLat) * 1.8;
   let longitudeDelta = (maxLng - minLng) * 1.2;
 
   // Round all to 8dp to avoid horrible floating point arithmetic

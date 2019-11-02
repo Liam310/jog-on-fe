@@ -166,7 +166,7 @@ describe.only('convertRouteToRegion', () => {
     ).to.deep.equal({
       latitude: 53.75,
       longitude: -1.55,
-      latitudeDelta: 0.15,
+      latitudeDelta: 0.18,
       longitudeDelta: 0.12
     });
   });
@@ -182,7 +182,7 @@ describe.only('convertRouteToRegion', () => {
     expect(actual).to.deep.equal({
       latitude: 51.515401,
       longitude: 7.459209,
-      latitudeDelta: 0.00612912,
+      latitudeDelta: 0.00735494,
       longitudeDelta: 0.00965595
     });
   });
