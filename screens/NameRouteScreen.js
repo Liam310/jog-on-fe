@@ -29,7 +29,6 @@ export default class NameRouteScreen extends React.Component {
         <MapView
           style={{
             width: Dimensions.get('window').width,
-            // height: Dimensions.get('window').height
             flex: 1
           }}
           initialRegion={{
@@ -37,8 +36,6 @@ export default class NameRouteScreen extends React.Component {
             longitude: -1.546191464587611,
             latitudeDelta: 0.0073,
             longitudeDelta: 0.0073
-            // latitudeDelta: 0.0922,
-            // longitudeDelta: 0.0421
           }}
         >
           <Polyline
@@ -50,8 +47,6 @@ export default class NameRouteScreen extends React.Component {
             return <Marker coordinate={{ latitude, longitude }} key={index} />;
           })}
         </MapView>
-        {/* <Text>Question 1!</Text>
-        <Text>route: {navigation.getParam('actualRoute', [])}</Text> */}
         <View
           style={{
             position: 'absolute',
@@ -74,7 +69,6 @@ export default class NameRouteScreen extends React.Component {
           style={{
             height: 40,
             width: 300,
-            // justifyContent: 'flex-start',
             position: 'absolute',
             top: 75 + Constants.statusBarHeight,
             backgroundColor: 'white',
@@ -124,12 +118,9 @@ export default class NameRouteScreen extends React.Component {
               paddingBottom: 15
             }}
           >
-            <Text style={{ color: 'white', fontSize: 32 }}>DONE</Text>
+            <Text style={{ color: 'white', fontSize: 20 }}>DONE</Text>
           </View>
         </TouchableHighlight>
-        {/* {this.state.flags.map((flag, index) => {
-          return <Text key={index}>{flag} </Text>;
-        })} */}
       </View>
     );
   }
