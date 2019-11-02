@@ -1,5 +1,7 @@
 import React from 'react';
-import { Text, View, Button } from 'react-native';
+import { Text, View, Dimensions, TouchableHighlight } from 'react-native';
+import MapView, { Polyline, Marker } from 'react-native-maps';
+import Constants from 'expo-constants';
 
 export default class SecondQuestionScreen extends React.Component {
   state = {
@@ -11,32 +13,107 @@ export default class SecondQuestionScreen extends React.Component {
       <View
         style={{
           flex: 1,
+          alignItems: 'center',
           justifyContent: 'center',
-          alignItems: 'center'
+          paddingTop: Constants.statusBarHeight,
+          backgroundColor: '#ffffff'
         }}
       >
-        <Text>Question 2!</Text>
-        <Text>route: {navigation.getParam('actualRoute', 'N/A')}</Text>
-        <Button
-          title="Go to q3"
+        <MapView
+          style={{
+            width: Dimensions.get('window').width,
+            flex: 1
+          }}
+          onLongPress={this.handleMapPress}
+          initialRegion={{
+            latitude: 53.79493492583547,
+            longitude: -1.546191464587611,
+            latitudeDelta: 0.0073,
+            longitudeDelta: 0.0073
+          }}
+        >
+          <Polyline
+            coordinates={navigation.getParam('actualRoute', [])}
+            strokeColor="#000000"
+            strokeWidth={6}
+          />
+          {this.state.flags.map(({ latitude, longitude }, index) => {
+            return <Marker coordinate={{ latitude, longitude }} key={index} />;
+          })}
+
+          {navigation
+            .getParam('existingFlags')
+            .map(({ latitude, longitude }, index) => {
+              return (
+                <Marker coordinate={{ latitude, longitude }} key={index} />
+              );
+            })}
+        </MapView>
+        <View
+          style={{
+            position: 'absolute',
+            top: 15 + Constants.statusBarHeight,
+            borderRadius: 5,
+            backgroundColor: '#3cc1c7',
+            marginLeft: 15,
+            marginRight: 15,
+            paddingLeft: 15,
+            paddingRight: 15,
+            paddingTop: 10,
+            paddingBottom: 10
+          }}
+        >
+          <Text style={{ color: 'white', fontSize: 20 }}>
+            Please mark any areas with inadequate lighting on the route below
+          </Text>
+        </View>
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 25,
+            borderRadius: 5,
+            backgroundColor: '#848484',
+            marginLeft: 15,
+            marginRight: 15,
+            paddingLeft: 15,
+            paddingRight: 15,
+            paddingTop: 10,
+            paddingBottom: 10
+          }}
+        >
+          <Text style={{ color: 'white', fontSize: 18 }}>
+            Press and hold on the route to place a marker, then press next to
+            move onto the next question
+          </Text>
+        </View>
+        <TouchableHighlight
           onPress={() => {
-            this.props.navigation.navigate('ThirdQuestion', {
+            navigation.navigate('ThirdQuestion', {
               actualRoute: navigation.getParam('actualRoute'),
-              flags: this.state.flags
+              flags: this.state.flags,
+              existingFlags: navigation.getParam('existingFlags')
             });
           }}
-        />
-        <Button
-          title="Add light flag"
-          onPress={() => {
-            this.setState(currentState => {
-              return { flags: [...currentState.flags, 'light'] };
-            });
+          style={{
+            position: 'absolute',
+            bottom: 125,
+            borderRadius: 500
           }}
-        />
-        {this.state.flags.map((flag, index) => {
-          return <Text key={index}>{flag} </Text>;
-        })}
+        >
+          <View
+            style={{
+              backgroundColor: '#848484',
+              borderRadius: 500,
+              width: 80,
+              height: 80,
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <Text style={{ color: 'white', fontSize: 32 }}>></Text>
+          </View>
+        </TouchableHighlight>
       </View>
     );
   }
@@ -46,4 +123,19 @@ export default class SecondQuestionScreen extends React.Component {
       flags: this.props.navigation.getParam('flags')
     });
   }
+
+  handleMapPress = async ({ nativeEvent: { coordinate } }) => {
+    const newFlag = {
+      user_id: 1,
+      flag_type_id: 2,
+      latitude: coordinate.latitude,
+      longitude: coordinate.longitude
+    };
+
+    this.setState(currentState => {
+      return {
+        flags: [...currentState.flags, newFlag]
+      };
+    });
+  };
 }
