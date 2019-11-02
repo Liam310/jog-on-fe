@@ -3,6 +3,7 @@ import { Text, View, Dimensions, TouchableHighlight } from 'react-native';
 import MapView, { Polyline, Marker } from 'react-native-maps';
 import Constants from 'expo-constants';
 import * as api from '../utils/api';
+import GonePin from '../assets/mapPins/GonePinScaled.png';
 
 export default class ThirdQuestionScreen extends React.Component {
   state = {
@@ -39,15 +40,27 @@ export default class ThirdQuestionScreen extends React.Component {
             strokeWidth={6}
           />
           {this.state.flags.map(({ latitude, longitude }, index) => {
-            return <Marker coordinate={{ latitude, longitude }} key={index} />;
+            return (
+              <Marker
+                coordinate={{ latitude, longitude }}
+                key={index}
+                image={GonePin}
+              />
+            );
           })}
 
           {navigation
             .getParam('existingFlags')
-            .map(({ latitude, longitude }, index) => {
-              return (
-                <Marker coordinate={{ latitude, longitude }} key={index} />
-              );
+            .map(({ latitude, longitude, flag_type_id }, index) => {
+              if (flag_type_id === 3) {
+                return (
+                  <Marker
+                    coordinate={{ latitude, longitude }}
+                    key={index}
+                    image={GonePin}
+                  />
+                );
+              }
             })}
         </MapView>
         <View

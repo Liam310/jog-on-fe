@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, Dimensions, TouchableHighlight } from 'react-native';
 import MapView, { Polyline, Marker } from 'react-native-maps';
 import Constants from 'expo-constants';
+import DarkPin from '../assets/mapPins/DarkPinScaled.png';
 
 export default class SecondQuestionScreen extends React.Component {
   state = {
@@ -38,15 +39,27 @@ export default class SecondQuestionScreen extends React.Component {
             strokeWidth={6}
           />
           {this.state.flags.map(({ latitude, longitude }, index) => {
-            return <Marker coordinate={{ latitude, longitude }} key={index} />;
+            return (
+              <Marker
+                coordinate={{ latitude, longitude }}
+                key={index}
+                image={DarkPin}
+              />
+            );
           })}
 
           {navigation
             .getParam('existingFlags')
-            .map(({ latitude, longitude }, index) => {
-              return (
-                <Marker coordinate={{ latitude, longitude }} key={index} />
-              );
+            .map(({ latitude, longitude, flag_type_id }, index) => {
+              if (flag_type_id === 2) {
+                return (
+                  <Marker
+                    coordinate={{ latitude, longitude }}
+                    key={index}
+                    image={DarkPin}
+                  />
+                );
+              }
             })}
         </MapView>
         <View

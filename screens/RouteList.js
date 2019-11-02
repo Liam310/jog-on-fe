@@ -1,47 +1,45 @@
 import React from 'react';
-import { Text, View } from 'react-native';
-import { TouchableHighlight } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native';
+import * as api from '../utils/api';
+import { NavigationEvents } from 'react-navigation';
+import styled from 'styled-components/native';
+import RouteCard from '../components/RouteCard';
+
+const CardList = styled.ScrollView`
+  padding-top: 25;
+`;
 
 export default class RouteList extends React.Component {
   state = {
-    routes: ['route1', 'route2', 'route3']
+    routes: []
   };
 
   render() {
     const { navigation } = this.props;
     const { routes } = this.state;
+    const distanceUnit = navigation.getParam('unit', 'km');
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
+      <CardList
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 60 }}
       >
-        <Text>RouteList</Text>
-        <Text>Units: {navigation.getParam('unit', 'km')}</Text>
-        {routes.map((route, index) => {
+        <NavigationEvents onDidFocus={this.fetchRoutes} />
+        {routes.map(route => {
           return (
-            <TouchableHighlight
-              key={index}
-              onPress={() => {
-                navigation.navigate('Home', { route: route });
-              }}
-            >
-              <View
-                style={{
-                  width: 100,
-                  height: 100,
-                  backgroundColor: 'gray',
-                  marginBottom: 10
-                }}
-              >
-                <Text>{route}</Text>
-              </View>
-            </TouchableHighlight>
+            <RouteCard
+              key={route.route_id}
+              route={route}
+              distanceUnit={distanceUnit}
+            />
           );
         })}
-      </View>
+      </CardList>
     );
   }
+
+  fetchRoutes = () => {
+    api.getRoutes().then(routes => {
+      this.setState({ routes });
+    });
+  };
 }
