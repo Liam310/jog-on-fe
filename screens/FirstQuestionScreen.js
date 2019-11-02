@@ -40,6 +40,14 @@ export default class FirstQuestionScreen extends React.Component {
           {this.state.flags.map(({ latitude, longitude }, index) => {
             return <Marker coordinate={{ latitude, longitude }} key={index} />;
           })}
+
+          {navigation
+            .getParam('existingFlags')
+            .map(({ latitude, longitude }, index) => {
+              return (
+                <Marker coordinate={{ latitude, longitude }} key={index} />
+              );
+            })}
         </MapView>
         <View
           style={{
@@ -82,7 +90,8 @@ export default class FirstQuestionScreen extends React.Component {
           onPress={() => {
             navigation.navigate('SecondQuestion', {
               actualRoute: navigation.getParam('actualRoute'),
-              flags: this.state.flags
+              flags: this.state.flags,
+              existingFlags: navigation.getParam('existingFlags')
             });
           }}
           style={{

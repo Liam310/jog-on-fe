@@ -6,10 +6,11 @@ import {
   TouchableHighlight,
   Platform
 } from 'react-native';
-import MapView, { Polyline } from 'react-native-maps';
+import MapView, { Polyline, Marker } from 'react-native-maps';
 import Constants from 'expo-constants';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
+import * as api from '../utils/api';
 
 export default class HomeScreen extends React.Component {
   state = {
@@ -21,7 +22,8 @@ export default class HomeScreen extends React.Component {
       longitude: -1.5491,
       latitudeDelta: 0.0122,
       longitudeDelta: 0.0073
-    }
+    },
+    existingFlags: []
   };
 
   render() {
@@ -57,6 +59,9 @@ export default class HomeScreen extends React.Component {
             strokeColor="#000000"
             strokeWidth={6}
           />
+          {this.state.existingFlags.map(({ latitude, longitude }, index) => {
+            return <Marker coordinate={{ latitude, longitude }} key={index} />;
+          })}
         </MapView>
         <TouchableHighlight
           onPress={this.handlePress}
@@ -93,6 +98,7 @@ export default class HomeScreen extends React.Component {
       });
     } else {
       this.getLocationAsync();
+      this.fetchFlags();
       // // api.getAllUsers();
       // this.sendAllFlags();
       // this.sendRoutes();
@@ -156,10 +162,17 @@ export default class HomeScreen extends React.Component {
         } else {
           this.locationUpdateWatcher.remove();
           this.props.navigation.navigate('FirstQuestion', {
-            actualRoute: this.state.actualRoute
+            actualRoute: this.state.actualRoute,
+            existingFlags: this.state.existingFlags
           });
         }
       }
     );
+  };
+
+  fetchFlags = () => {
+    api.getFlags().then(({ flags }) => {
+      this.setState({ existingFlags: flags });
+    });
   };
 }

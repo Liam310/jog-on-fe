@@ -41,6 +41,14 @@ export default class ThirdQuestionScreen extends React.Component {
           {this.state.flags.map(({ latitude, longitude }, index) => {
             return <Marker coordinate={{ latitude, longitude }} key={index} />;
           })}
+
+          {navigation
+            .getParam('existingFlags')
+            .map(({ latitude, longitude }, index) => {
+              return (
+                <Marker coordinate={{ latitude, longitude }} key={index} />
+              );
+            })}
         </MapView>
         <View
           style={{
