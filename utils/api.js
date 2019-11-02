@@ -18,6 +18,13 @@ export const getFlags = async () => {
 };
 
 // ROUTES
+export const getRoutes = async () => {
+  const {
+    data: { routes }
+  } = await request.get('/routes');
+  return routes;
+};
+
 export const postRoute = route => {
   return request.post('/routes', route).catch(error => {
     console.log(error);
