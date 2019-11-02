@@ -11,6 +11,7 @@ import Constants from 'expo-constants';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import * as api from '../utils/api';
+import { checkSufficientRegionChange } from '../utils/utils';
 
 export default class HomeScreen extends React.Component {
   state = {
@@ -23,7 +24,13 @@ export default class HomeScreen extends React.Component {
       latitudeDelta: 0.0122,
       longitudeDelta: 0.0073
     },
-    existingFlags: []
+    existingFlags: [],
+    flagFetchRegion: {
+      latitude: 53.8008,
+      longitude: -1.5491,
+      latitudeDelta: 0.0122,
+      longitudeDelta: 0.0073
+    }
   };
 
   render() {
@@ -98,7 +105,7 @@ export default class HomeScreen extends React.Component {
       });
     } else {
       this.getLocationAsync();
-      this.fetchFlags();
+      // this.fetchFlags();
       // // api.getAllUsers();
       // this.sendAllFlags();
       // this.sendRoutes();
@@ -115,21 +122,36 @@ export default class HomeScreen extends React.Component {
     }
 
     const initialLocation = await Location.getCurrentPositionAsync({});
-    this.setState(({ mapRegion: { latitudeDelta, longitudeDelta } }) => {
-      const { latitude, longitude } = initialLocation.coords;
-      return {
-        mapRegion: {
-          latitude,
-          longitude,
-          latitudeDelta,
-          longitudeDelta
-        }
-      };
-    });
+    this.setState(
+      ({ mapRegion: { latitudeDelta, longitudeDelta } }) => {
+        const { latitude, longitude } = initialLocation.coords;
+        return {
+          mapRegion: {
+            latitude,
+            longitude,
+            latitudeDelta,
+            longitudeDelta
+          },
+          flagFetchRegion: {
+            latitude,
+            longitude,
+            latitudeDelta,
+            longitudeDelta
+          }
+        };
+      },
+      () => {
+        this.fetchFlags(this.state.flagFetchRegion);
+      }
+    );
   };
 
   handleRegionChange = mapRegion => {
     this.setState({ mapRegion });
+    if (checkSufficientRegionChange(this.state.flagFetchRegion, mapRegion)) {
+      this.fetchFlags(mapRegion);
+      this.setState({ flagFetchRegion: mapRegion });
+    }
   };
 
   watchPosition = async () => {
@@ -170,8 +192,8 @@ export default class HomeScreen extends React.Component {
     );
   };
 
-  fetchFlags = () => {
-    api.getFlags().then(({ flags }) => {
+  fetchFlags = regionObj => {
+    api.getFlags(regionObj).then(({ flags }) => {
       this.setState({ existingFlags: flags });
     });
   };
