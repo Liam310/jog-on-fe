@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, Dimensions, TouchableHighlight } from 'react-native';
 import MapView, { Polyline, Marker } from 'react-native-maps';
 import Constants from 'expo-constants';
+import * as api from '../utils/api';
 
 export default class ThirdQuestionScreen extends React.Component {
   state = {
@@ -22,7 +23,6 @@ export default class ThirdQuestionScreen extends React.Component {
         <MapView
           style={{
             width: Dimensions.get('window').width,
-            // height: Dimensions.get('window').height
             flex: 1
           }}
           onLongPress={this.handleMapPress}
@@ -31,8 +31,6 @@ export default class ThirdQuestionScreen extends React.Component {
             longitude: -1.546191464587611,
             latitudeDelta: 0.0073,
             longitudeDelta: 0.0073
-            // latitudeDelta: 0.0922,
-            // longitudeDelta: 0.0421
           }}
         >
           <Polyline
@@ -44,8 +42,6 @@ export default class ThirdQuestionScreen extends React.Component {
             return <Marker coordinate={{ latitude, longitude }} key={index} />;
           })}
         </MapView>
-        {/* <Text>Question 1!</Text>
-        <Text>route: {navigation.getParam('actualRoute', [])}</Text> */}
         <View
           style={{
             position: 'absolute',
@@ -85,10 +81,15 @@ export default class ThirdQuestionScreen extends React.Component {
         </View>
         <TouchableHighlight
           onPress={() => {
-            navigation.navigate('NameRoute', {
-              actualRoute: navigation.getParam('actualRoute'),
-              flags: this.state.flags
-            });
+            api
+              .postFlags({ flags: this.state.flags })
+              .then(() => {
+                navigation.navigate('NameRoute', {
+                  actualRoute: navigation.getParam('actualRoute'),
+                  flags: this.state.flags
+                });
+              })
+              .catch(err => console.log(err));
           }}
           style={{
             position: 'absolute',
@@ -99,27 +100,17 @@ export default class ThirdQuestionScreen extends React.Component {
           <View
             style={{
               backgroundColor: '#848484',
-              borderRadius: 50000,
-              paddingLeft: 35,
-              paddingRight: 35,
-              paddingTop: 15,
-              paddingBottom: 15
+              borderRadius: 500,
+              width: 80,
+              height: 80,
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center'
             }}
           >
             <Text style={{ color: 'white', fontSize: 32 }}>></Text>
           </View>
         </TouchableHighlight>
-        {/* <Button
-          title="Add mud flag"
-          onPress={() => {
-            this.setState(currentState => {
-              return { flags: [...currentState.flags, 'mud'] };
-            });
-          }}
-        /> */}
-        {/* {this.state.flags.map((flag, index) => {
-          return <Text key={index}>{flag} </Text>;
-        })} */}
       </View>
     );
   }
@@ -131,13 +122,16 @@ export default class ThirdQuestionScreen extends React.Component {
   }
 
   handleMapPress = async ({ nativeEvent: { coordinate } }) => {
-    // console.log(coordinate);
-    // api.postFlag(coordinate);
+    const newFlag = {
+      user_id: 1,
+      flag_type_id: 3,
+      latitude: coordinate.latitude,
+      longitude: coordinate.longitude
+    };
 
-    // MAKE FLAG OBJ TO BE POSTED
     this.setState(currentState => {
       return {
-        flags: [...currentState.flags, coordinate]
+        flags: [...currentState.flags, newFlag]
       };
     });
   };

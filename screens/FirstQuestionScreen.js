@@ -22,7 +22,6 @@ export default class FirstQuestionScreen extends React.Component {
         <MapView
           style={{
             width: Dimensions.get('window').width,
-            // height: Dimensions.get('window').height
             flex: 1
           }}
           onLongPress={this.handleMapPress}
@@ -31,8 +30,6 @@ export default class FirstQuestionScreen extends React.Component {
             longitude: -1.546191464587611,
             latitudeDelta: 0.0073,
             longitudeDelta: 0.0073
-            // latitudeDelta: 0.0922,
-            // longitudeDelta: 0.0421
           }}
         >
           <Polyline
@@ -41,12 +38,9 @@ export default class FirstQuestionScreen extends React.Component {
             strokeWidth={6}
           />
           {this.state.flags.map(({ latitude, longitude }, index) => {
-            console.log(latitude, longitude);
             return <Marker coordinate={{ latitude, longitude }} key={index} />;
           })}
         </MapView>
-        {/* <Text>Question 1!</Text>
-        <Text>route: {navigation.getParam('actualRoute', [])}</Text> */}
         <View
           style={{
             position: 'absolute',
@@ -80,8 +74,8 @@ export default class FirstQuestionScreen extends React.Component {
           }}
         >
           <Text style={{ color: 'white', fontSize: 18 }}>
-            Press and hold on the route to place a marker, then press next to move
-            onto the next question
+            Press and hold on the route to place a marker, then press next to
+            move onto the next question
           </Text>
         </View>
         <TouchableHighlight
@@ -100,11 +94,12 @@ export default class FirstQuestionScreen extends React.Component {
           <View
             style={{
               backgroundColor: '#848484',
-              borderRadius: 50000,
-              paddingLeft: 35,
-              paddingRight: 35,
-              paddingTop: 15,
-              paddingBottom: 15
+              borderRadius: 500,
+              width: 80,
+              height: 80,
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center'
             }}
           >
             <Text style={{ color: 'white', fontSize: 32 }}>></Text>
@@ -115,13 +110,16 @@ export default class FirstQuestionScreen extends React.Component {
   }
 
   handleMapPress = async ({ nativeEvent: { coordinate } }) => {
-    // console.log(coordinate);
-    // api.postFlag(coordinate);
+    const newFlag = {
+      user_id: 1,
+      flag_type_id: 1,
+      latitude: coordinate.latitude,
+      longitude: coordinate.longitude
+    };
 
-    // MAKE FLAG OBJ TO BE POSTED
     this.setState(currentState => {
       return {
-        flags: [...currentState.flags, coordinate]
+        flags: [...currentState.flags, newFlag]
       };
     });
   };

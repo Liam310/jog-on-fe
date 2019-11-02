@@ -22,7 +22,6 @@ export default class SecondQuestionScreen extends React.Component {
         <MapView
           style={{
             width: Dimensions.get('window').width,
-            // height: Dimensions.get('window').height
             flex: 1
           }}
           onLongPress={this.handleMapPress}
@@ -31,8 +30,6 @@ export default class SecondQuestionScreen extends React.Component {
             longitude: -1.546191464587611,
             latitudeDelta: 0.0073,
             longitudeDelta: 0.0073
-            // latitudeDelta: 0.0922,
-            // longitudeDelta: 0.0421
           }}
         >
           <Polyline
@@ -97,11 +94,12 @@ export default class SecondQuestionScreen extends React.Component {
           <View
             style={{
               backgroundColor: '#848484',
-              borderRadius: 50000,
-              paddingLeft: 35,
-              paddingRight: 35,
-              paddingTop: 15,
-              paddingBottom: 15
+              borderRadius: 500,
+              width: 80,
+              height: 80,
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center'
             }}
           >
             <Text style={{ color: 'white', fontSize: 32 }}>></Text>
@@ -118,13 +116,16 @@ export default class SecondQuestionScreen extends React.Component {
   }
 
   handleMapPress = async ({ nativeEvent: { coordinate } }) => {
-    // console.log(coordinate);
-    // api.postFlag(coordinate);
+    const newFlag = {
+      user_id: 1,
+      flag_type_id: 2,
+      latitude: coordinate.latitude,
+      longitude: coordinate.longitude
+    };
 
-    // MAKE FLAG OBJ TO BE POSTED
     this.setState(currentState => {
       return {
-        flags: [...currentState.flags, coordinate]
+        flags: [...currentState.flags, newFlag]
       };
     });
   };
