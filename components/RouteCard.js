@@ -42,7 +42,10 @@ const DistFlagWrap = styled.View`
   align-items: flex-end;
 `;
 
-const RouteCard = ({ route: { route_id, length_in_km, flag_type_ids } }) => {
+const RouteCard = ({
+  route: { route_id, length_in_km, flag_type_ids },
+  distanceUnit
+}) => {
   const distanceStyle = { width: 60 + Math.ceil(length_in_km / 10) * 15 };
   return (
     <Card
@@ -57,9 +60,15 @@ const RouteCard = ({ route: { route_id, length_in_km, flag_type_ids } }) => {
       <Title>{route_id}</Title>
       <DistFlagWrap>
         <DistanceWrap>
-          <Distance style={distanceStyle}>
-            {length_in_km.toFixed(1)} Km
-          </Distance>
+          {distanceUnit === 'km' ? (
+            <Distance style={distanceStyle}>
+              {length_in_km.toFixed(1)} Km
+            </Distance>
+          ) : (
+            <Distance style={distanceStyle}>
+              {(length_in_km * 0.621371).toFixed(1)} Mi
+            </Distance>
+          )}
         </DistanceWrap>
         {flag_type_ids[0] !== null ? (
           <FlagBox flags={flag_type_ids} />
