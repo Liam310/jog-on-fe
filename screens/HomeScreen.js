@@ -11,6 +11,7 @@ import Constants from 'expo-constants';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import * as api from '../utils/api';
+import flagRef from '../utils/flagRefObj';
 
 export default class HomeScreen extends React.Component {
   state = {
@@ -59,9 +60,17 @@ export default class HomeScreen extends React.Component {
             strokeColor="#000000"
             strokeWidth={6}
           />
-          {this.state.existingFlags.map(({ latitude, longitude }, index) => {
-            return <Marker coordinate={{ latitude, longitude }} key={index} />;
-          })}
+          {this.state.existingFlags.map(
+            ({ latitude, longitude, flag_type_id }, index) => {
+              return (
+                <Marker
+                  coordinate={{ latitude, longitude }}
+                  key={index}
+                  image={flagRef[flag_type_id]}
+                />
+              );
+            }
+          )}
         </MapView>
         <TouchableHighlight
           onPress={this.handlePress}
