@@ -3,6 +3,7 @@ import { Text, View, Dimensions, TouchableHighlight } from 'react-native';
 import MapView, { Polyline, Marker } from 'react-native-maps';
 import Constants from 'expo-constants';
 import DarkPin from '../assets/mapPins/DarkPinScaled.png';
+import flagRef from '../utils/flagRefObj';
 import { convertRouteToRegion } from '../utils/utils';
 
 export default class SecondQuestionScreen extends React.Component {
@@ -36,15 +37,17 @@ export default class SecondQuestionScreen extends React.Component {
             strokeColor="#000000"
             strokeWidth={6}
           />
-          {this.state.flags.map(({ latitude, longitude }, index) => {
-            return (
-              <Marker
-                coordinate={{ latitude, longitude }}
-                key={index}
-                image={DarkPin}
-              />
-            );
-          })}
+          {this.state.flags.map(
+            ({ latitude, longitude, flag_type_id }, index) => {
+              return (
+                <Marker
+                  coordinate={{ latitude, longitude }}
+                  key={index}
+                  image={flagRef[flag_type_id]}
+                />
+              );
+            }
+          )}
 
           {navigation
             .getParam('existingFlags')
@@ -93,8 +96,8 @@ export default class SecondQuestionScreen extends React.Component {
           }}
         >
           <Text style={{ color: 'white', fontSize: 18 }}>
-            Press and hold on the route to place a marker, then press next to move
-            onto the next question
+            Press and hold on the route to place a marker, then press next to
+            move onto the next question
           </Text>
         </View>
         <TouchableHighlight
