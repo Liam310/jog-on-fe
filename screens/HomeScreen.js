@@ -13,6 +13,7 @@ import * as Permissions from 'expo-permissions';
 import * as api from '../utils/api';
 import flagRef from '../utils/flagRefObj';
 import { checkSufficientRegionChange } from '../utils/utils';
+import ToggleFlags from '../components/ToggleFlags';
 
 export default class HomeScreen extends React.Component {
   state = {
@@ -25,18 +26,19 @@ export default class HomeScreen extends React.Component {
       latitudeDelta: 0.0122,
       longitudeDelta: 0.0073
     },
-    existingFlags: [],
     flagFetchRegion: {
       latitude: 53.8008,
       longitude: -1.5491,
       latitudeDelta: 0.0122,
       longitudeDelta: 0.0073
-    }
+    },
+    existingFlags: [],
+    showFlags: true
   };
 
   render() {
     // const { navigation } = this.props;
-    const { mapRegion } = this.state;
+    const { mapRegion, actualRoute, showFlags, existingFlags } = this.state;
     return (
       <View
         style={{
@@ -63,12 +65,12 @@ export default class HomeScreen extends React.Component {
           onRegionChangeComplete={this.handleRegionChange}
         >
           <Polyline
-            coordinates={this.state.actualRoute}
+            coordinates={actualRoute}
             strokeColor="#000000"
             strokeWidth={6}
           />
-          {this.state.existingFlags.map(
-            ({ latitude, longitude, flag_type_id }, index) => {
+          {showFlags &&
+            existingFlags.map(({ latitude, longitude, flag_type_id }, index) => {
               return (
                 <Marker
                   coordinate={{ latitude, longitude }}
@@ -76,9 +78,9 @@ export default class HomeScreen extends React.Component {
                   image={flagRef[flag_type_id]}
                 />
               );
-            }
-          )}
+            })}
         </MapView>
+        <ToggleFlags handleToggle={this.handleToggle} />
         <TouchableHighlight
           onPress={this.handlePress}
           style={{
@@ -178,6 +180,12 @@ export default class HomeScreen extends React.Component {
         });
       }
     );
+  };
+
+  handleToggle = () => {
+    this.setState(currentState => {
+      return { showFlags: !currentState.showFlags };
+    });
   };
 
   handlePress = () => {
