@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, Dimensions, TouchableHighlight } from 'react-native';
 import MapView, { Polyline, Marker } from 'react-native-maps';
 import Constants from 'expo-constants';
-// import DarkPin from '../assets/mapPins/DarkPinScaled.png';
+import DarkPin from '../assets/mapPins/DarkPinScaled.png';
 import flagRef from '../utils/flagRefObj';
 import { convertRouteToRegion } from '../utils/utils';
 

@@ -3,7 +3,7 @@ import { Text, View, Dimensions, TouchableHighlight } from 'react-native';
 import MapView, { Polyline, Marker } from 'react-native-maps';
 import Constants from 'expo-constants';
 import * as api from '../utils/api';
-// import GonePin from '../assets/mapPins/GonePinScaled.png';
+import GonePin from '../assets/mapPins/GonePinScaled.png';
 import flagRef from '../utils/flagRefObj';
 import { convertRouteToRegion } from '../utils/utils';
 
