@@ -1,4 +1,4 @@
-const { checkSufficientRegionChange } = require('./utils');
+const { checkSufficientRegionChange, convertRouteToRegion } = require('./utils');
 const { expect } = require('chai');
 
 describe('checkSufficientRegionChange', () => {
@@ -145,5 +145,45 @@ describe('checkSufficientRegionChange', () => {
         }
       )
     ).to.be.false;
+  });
+});
+
+describe.only('convertRouteToRegion', () => {
+  it('returns an object with the correct keys', () => {
+    expect(
+      convertRouteToRegion([
+        { latitude: 1, longitude: 2 },
+        { latitude: 3, longitude: 4 }
+      ])
+    ).to.have.keys('latitude', 'longitude', 'latitudeDelta', 'longitudeDelta');
+  });
+  it('returns the correct region for an array length 2', () => {
+    expect(
+      convertRouteToRegion([
+        { latitude: 53.7, longitude: -1.5 },
+        { latitude: 53.8, longitude: -1.6 }
+      ])
+    ).to.deep.equal({
+      latitude: 53.75,
+      longitude: -1.55,
+      latitudeDelta: 0.18,
+      longitudeDelta: 0.12
+    });
+  });
+  it('return the correct region for a much longer array', () => {
+    const input = [
+      { latitude: 51.513357512, longitude: 7.45574331 },
+      { latitude: 51.515400598, longitude: 7.45518541 },
+      { latitude: 51.516241842, longitude: 7.456494328 },
+      { latitude: 51.516722545, longitude: 7.459863183 },
+      { latitude: 51.517443592, longitude: 7.463232037 }
+    ];
+    const actual = convertRouteToRegion(input);
+    expect(actual).to.deep.equal({
+      latitude: 51.515401,
+      longitude: 7.459209,
+      latitudeDelta: 0.00735494,
+      longitudeDelta: 0.00965595
+    });
   });
 });
