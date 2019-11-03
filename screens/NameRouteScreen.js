@@ -12,6 +12,7 @@ import * as api from '../utils/api';
 import * as polyline from '@mapbox/polyline';
 import { getPathLength } from 'geolib';
 import flagRef from '../utils/flagRefObj';
+import { convertRouteToRegion } from '../utils/utils';
 
 export default class NameRouteScreen extends React.Component {
   state = {
@@ -35,12 +36,9 @@ export default class NameRouteScreen extends React.Component {
             width: Dimensions.get('window').width,
             flex: 1
           }}
-          initialRegion={{
-            latitude: 53.79493492583547,
-            longitude: -1.546191464587611,
-            latitudeDelta: 0.0073,
-            longitudeDelta: 0.0073
-          }}
+          initialRegion={convertRouteToRegion(
+            navigation.getParam('actualRoute', [])
+          )}
         >
           <Polyline
             coordinates={navigation.getParam('actualRoute', [])}

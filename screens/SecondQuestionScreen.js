@@ -3,6 +3,7 @@ import { Text, View, Dimensions, TouchableHighlight } from 'react-native';
 import MapView, { Polyline, Marker } from 'react-native-maps';
 import Constants from 'expo-constants';
 import DarkPin from '../assets/mapPins/DarkPinScaled.png';
+import { convertRouteToRegion } from '../utils/utils';
 
 export default class SecondQuestionScreen extends React.Component {
   state = {
@@ -26,12 +27,9 @@ export default class SecondQuestionScreen extends React.Component {
             flex: 1
           }}
           onLongPress={this.handleMapPress}
-          initialRegion={{
-            latitude: 53.79493492583547,
-            longitude: -1.546191464587611,
-            latitudeDelta: 0.0073,
-            longitudeDelta: 0.0073
-          }}
+          initialRegion={convertRouteToRegion(
+            navigation.getParam('actualRoute', [])
+          )}
         >
           <Polyline
             coordinates={navigation.getParam('actualRoute', [])}
@@ -95,8 +93,8 @@ export default class SecondQuestionScreen extends React.Component {
           }}
         >
           <Text style={{ color: 'white', fontSize: 18 }}>
-            Press and hold on the route to place a marker, then press next to
-            move onto the next question
+            Press and hold on the route to place a marker, then press next to move
+            onto the next question
           </Text>
         </View>
         <TouchableHighlight
