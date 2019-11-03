@@ -2,12 +2,8 @@ import React from 'react';
 import { ScrollView } from 'react-native';
 import * as api from '../utils/api';
 import { NavigationEvents } from 'react-navigation';
-import styled from 'styled-components/native';
 import RouteCard from '../components/RouteCard';
-
-const CardList = styled.ScrollView`
-  padding-top: 25;
-`;
+import Constants from 'expo-constants';
 
 export default class RouteList extends React.Component {
   state = {
@@ -19,9 +15,13 @@ export default class RouteList extends React.Component {
     const { routes } = this.state;
     const distanceUnit = navigation.getParam('unit', 'km');
     return (
-      <CardList
+      <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 60 }}
+        contentContainerStyle={{
+          paddingTop: Constants.statusBarHeight + 10,
+          paddingBottom: 60,
+          alignItems: 'center'
+        }}
       >
         <NavigationEvents onDidFocus={this.fetchRoutes} />
         {routes.map(route => {
@@ -33,7 +33,7 @@ export default class RouteList extends React.Component {
             />
           );
         })}
-      </CardList>
+      </ScrollView>
     );
   }
 

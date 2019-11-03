@@ -5,7 +5,6 @@ import flagRef from '../utils/flagRefObj';
 
 const FlagView = styled.View`
   flex-direction: row;
-  background-color: #c4c4c4;
   border-radius: 3;
   margin-right: 10;
   justify-content: space-around;
