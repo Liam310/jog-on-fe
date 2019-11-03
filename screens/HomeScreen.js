@@ -158,8 +158,9 @@ export default class HomeScreen extends React.Component {
   };
 
   handleRegionChange = mapRegion => {
+    const { flagFetchRegion, showFlags } = this.state;
     this.setState({ mapRegion });
-    if (checkSufficientRegionChange(this.state.flagFetchRegion, mapRegion)) {
+    if (checkSufficientRegionChange(flagFetchRegion, mapRegion) && showFlags) {
       this.fetchFlags(mapRegion);
       this.setState({ flagFetchRegion: mapRegion });
     }
@@ -183,6 +184,11 @@ export default class HomeScreen extends React.Component {
   };
 
   handleToggle = () => {
+    const { mapRegion, showFlags } = this.state;
+    if (!showFlags) {
+      this.fetchFlags(mapRegion);
+      this.setState({ flagFetchRegion: mapRegion });
+    }
     this.setState(currentState => {
       return { showFlags: !currentState.showFlags };
     });
@@ -210,6 +216,7 @@ export default class HomeScreen extends React.Component {
   };
 
   fetchFlags = regionObj => {
+    console.log('getting flags');
     api.getFlags(regionObj).then(({ flags }) => {
       this.setState({ existingFlags: flags });
     });
