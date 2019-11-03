@@ -6,8 +6,8 @@ import FlagBox from '../components/FlagBox';
 const Card = styled.View`
   background-color: #3cc1c7;
   height: 100;
-  width: 340;
-  margin-top: 6;
+  width: 93%;
+  margin-bottom: 8;
   border-radius: 3px;
   flex-direction: row;
   justify-content: space-between;
@@ -27,7 +27,6 @@ const Distance = styled.Text`
   padding-left: 5;
   padding-right: 5;
   font-size: 20;
-  background-color: #c4c4c4;
   border-radius: 3;
   margin-right: 10;
   text-align: right;
@@ -48,15 +47,7 @@ const RouteCard = ({
 }) => {
   const distanceStyle = { width: 60 + Math.ceil(length_in_km / 10) * 15 };
   return (
-    <Card
-      style={{
-        height: 100,
-        width: 340,
-        margin: 6,
-        backgroundColor: '#3cc1c7',
-        borderRadius: 3
-      }}
-    >
+    <Card>
       <Title>{route_id}</Title>
       <DistFlagWrap>
         <DistanceWrap>
