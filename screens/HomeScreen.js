@@ -12,14 +12,19 @@ import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import * as api from '../utils/api';
 import flagRef from '../utils/flagRefObj';
-import { checkSufficientRegionChange } from '../utils/utils';
+import {
+  checkSufficientRegionChange,
+  convertRouteToRegion
+} from '../utils/utils';
 import ToggleFlags from '../components/ToggleFlags';
+import { NavigationEvents } from 'react-navigation';
 
 export default class HomeScreen extends React.Component {
   state = {
     errorMessage: null,
     gettingLocation: false,
     actualRoute: [],
+    chosenRoute: [],
     mapRegion: {
       latitude: 53.8008,
       longitude: -1.5491,
@@ -37,8 +42,9 @@ export default class HomeScreen extends React.Component {
   };
 
   render() {
-    // const { navigation } = this.props;
+    const { navigation } = this.props;
     const { mapRegion, actualRoute, showFlags, existingFlags } = this.state;
+    const chosenRoute = navigation.getParam('decodedPoly', []);
     return (
       <View
         style={{
@@ -49,6 +55,11 @@ export default class HomeScreen extends React.Component {
           backgroundColor: '#ffffff'
         }}
       >
+        <NavigationEvents
+          onDidFocus={() => {
+            this.updateChosenRoute(chosenRoute);
+          }}
+        />
         {/* <Text>Home</Text> */}
         {/* <Text>route: {navigation.getParam('route', 'no route')}</Text> */}
         <MapView
@@ -69,16 +80,24 @@ export default class HomeScreen extends React.Component {
             strokeColor="#000000"
             strokeWidth={6}
           />
+
+          <Polyline
+            coordinates={chosenRoute}
+            strokeColor="#0066FF"
+            strokeWidth={6}
+          />
           {showFlags &&
-            existingFlags.map(({ latitude, longitude, flag_type_id }, index) => {
-              return (
-                <Marker
-                  coordinate={{ latitude, longitude }}
-                  key={index}
-                  image={flagRef[flag_type_id]}
-                />
-              );
-            })}
+            existingFlags.map(
+              ({ latitude, longitude, flag_type_id }, index) => {
+                return (
+                  <Marker
+                    coordinate={{ latitude, longitude }}
+                    key={index}
+                    image={flagRef[flag_type_id]}
+                  />
+                );
+              }
+            )}
         </MapView>
         <ToggleFlags handleToggle={this.handleToggle} />
         <TouchableHighlight
@@ -216,9 +235,17 @@ export default class HomeScreen extends React.Component {
   };
 
   fetchFlags = regionObj => {
-    console.log('getting flags');
     api.getFlags(regionObj).then(({ flags }) => {
       this.setState({ existingFlags: flags });
     });
+  };
+
+  updateChosenRoute = chosenRoute => {
+    if (chosenRoute.length > 0) {
+      this.setState({
+        chosenRoute,
+        mapRegion: convertRouteToRegion(chosenRoute)
+      });
+    }
   };
 }
