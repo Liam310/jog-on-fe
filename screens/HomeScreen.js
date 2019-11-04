@@ -221,14 +221,17 @@ export default class HomeScreen extends React.Component {
         };
       },
       () => {
-        if (this.state.gettingLocation) {
+        const { gettingLocation, actualRoute, existingFlags } = this.state;
+        if (gettingLocation) {
           this.watchPosition();
         } else {
           this.locationUpdateWatcher.remove();
-          this.props.navigation.navigate('FirstQuestion', {
-            actualRoute: this.state.actualRoute,
-            existingFlags: this.state.existingFlags
-          });
+          if (actualRoute.length > 3) {
+            this.props.navigation.navigate('FirstQuestion', {
+              actualRoute,
+              existingFlags
+            });
+          }
         }
       }
     );
