@@ -17,7 +17,8 @@ import { convertRouteToRegion } from '../utils/utils';
 export default class NameRouteScreen extends React.Component {
   state = {
     flags: [],
-    actualRouteName: ''
+    actualRouteName: '',
+    routeNameError: null
   };
   render() {
     const { navigation } = this.props;
@@ -88,6 +89,29 @@ export default class NameRouteScreen extends React.Component {
           onChangeText={actualRouteName => this.setState({ actualRouteName })}
           value={this.state.actualRouteName}
         />
+        {this.state.routeNameError && (
+          <View
+            style={{
+              position: 'absolute',
+              top: 150,
+              width: '75%',
+              backgroundColor: 'red',
+              paddingBottom: 2,
+              paddingTop: 2,
+              borderRadius: 3
+            }}
+          >
+            <Text
+              style={{
+                textAlign: 'center',
+                color: 'white',
+                fontSize: 15
+              }}
+            >
+              {this.state.routeNameError}
+            </Text>
+          </View>
+        )}
         <View
           style={{
             position: 'absolute',
@@ -108,10 +132,17 @@ export default class NameRouteScreen extends React.Component {
         </View>
         <TouchableHighlight
           onPress={() => {
-            this.handleRoutePosting();
-            navigation.navigate('ConfirmRouteAdded', {
-              actualRouteName: this.state.actualRouteName
-            });
+            if (this.state.actualRouteName.length < 4) {
+              this.setState({
+                routeNameError:
+                  'Route name required - must be more than 3 characters'
+              });
+            } else {
+              this.handleRoutePosting();
+              navigation.navigate('ConfirmRouteAdded', {
+                actualRouteName: this.state.actualRouteName
+              });
+            }
           }}
           style={{
             position: 'absolute',
@@ -153,6 +184,7 @@ export default class NameRouteScreen extends React.Component {
     const routeLength = getPathLength(actualRoute) / 1000;
 
     const newRoute = {
+      name: this.state.actualRouteName,
       poly: polyfied,
       user_id: 1,
       length_in_km: routeLength
@@ -161,7 +193,11 @@ export default class NameRouteScreen extends React.Component {
     api
       .postRoute(newRoute)
       .then(() => {
-        api.postFlags({ flags: navigation.getParam('flags') });
+        api.postFlags({ flags: navigation.getParam('flags') }).then(() => {
+          this.setState({
+            routeNameError: null
+          });
+        });
       })
       .catch(err => {
         console.log(err);
