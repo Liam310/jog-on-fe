@@ -5,6 +5,7 @@ import Constants from 'expo-constants';
 import MudPin from '../assets/mapPins/MudPinScaled.png';
 import flagRef from '../utils/flagRefObj';
 import { convertRouteToRegion } from '../utils/utils';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default class FirstQuestionScreen extends React.Component {
   state = {
@@ -126,7 +127,11 @@ export default class FirstQuestionScreen extends React.Component {
               alignItems: 'center'
             }}
           >
-            <Text style={{ color: 'white', fontSize: 32 }}>></Text>
+            <MaterialIcons
+              name="keyboard-arrow-right"
+              size={46}
+              color="white"
+            />
           </View>
         </TouchableHighlight>
       </View>
