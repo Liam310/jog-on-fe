@@ -109,7 +109,7 @@ export default class HomeScreen extends React.Component {
               }
             )}
         </MapView>
-        <ToggleFlags handleToggle={this.handleToggle} />
+        <ToggleFlags handleToggle={this.handleToggle} showFlags={showFlags} />
         <TouchableHighlight
           onPress={this.handlePress}
           style={{
