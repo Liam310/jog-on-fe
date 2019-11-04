@@ -43,7 +43,13 @@ export default class HomeScreen extends React.Component {
 
   render() {
     const { navigation } = this.props;
-    const { mapRegion, actualRoute, showFlags, existingFlags } = this.state;
+    const {
+      mapRegion,
+      actualRoute,
+      showFlags,
+      existingFlags,
+      gettingLocation
+    } = this.state;
     const chosenRoute = navigation.getParam('decodedPoly', []);
     return (
       <View
@@ -66,7 +72,7 @@ export default class HomeScreen extends React.Component {
         {/* <Text>Home</Text> */}
         {/* <Text>route: {navigation.getParam('route', 'no route')}</Text> */}
         <MapView
-          followsUserLocation={true}
+          followsUserLocation={gettingLocation}
           rotateEnabled={false}
           showsUserLocation={true}
           style={{
@@ -114,9 +120,7 @@ export default class HomeScreen extends React.Component {
         >
           <View
             style={{
-              backgroundColor: this.state.gettingLocation
-                ? '#FF3D3D'
-                : '#3cc1c7',
+              backgroundColor: gettingLocation ? '#FF3D3D' : '#3cc1c7',
               borderRadius: 500,
               paddingLeft: 35,
               paddingRight: 35,
@@ -130,7 +134,7 @@ export default class HomeScreen extends React.Component {
             }}
           >
             <Text style={{ color: 'white', fontSize: 20 }}>
-              {this.state.gettingLocation ? 'STOP' : 'START'}
+              {gettingLocation ? 'STOP' : 'START'}
             </Text>
           </View>
         </TouchableHighlight>
