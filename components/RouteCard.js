@@ -42,7 +42,7 @@ const DistFlagWrap = styled.View`
 `;
 
 const RouteCard = ({
-  route: { route_id, length_in_km, flag_type_ids, poly },
+  route: { route_id, name, length_in_km, flag_type_ids, poly },
   distanceUnit,
   handleRouteSelect
 }) => {
@@ -54,7 +54,7 @@ const RouteCard = ({
       }}
     >
       <>
-        <Title>{route_id}</Title>
+        <Title>{name}</Title>
         <DistFlagWrap>
           <DistanceWrap>
             {distanceUnit === 'km' ? (
