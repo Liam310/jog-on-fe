@@ -4,6 +4,7 @@ import * as api from '../utils/api';
 import { NavigationEvents } from 'react-navigation';
 import RouteCard from '../components/RouteCard';
 import Constants from 'expo-constants';
+import * as polyline from '@mapbox/polyline';
 
 export default class RouteList extends React.Component {
   state = {
@@ -30,6 +31,7 @@ export default class RouteList extends React.Component {
               key={route.route_id}
               route={route}
               distanceUnit={distanceUnit}
+              handleRouteSelect={this.handleRouteSelect}
             />
           );
         })}
@@ -41,5 +43,12 @@ export default class RouteList extends React.Component {
     api.getRoutes().then(routes => {
       this.setState({ routes });
     });
+  };
+
+  handleRouteSelect = poly => {
+    const decodedPoly = polyline.decode(poly).map(coordinate => {
+      return { latitude: coordinate[0], longitude: coordinate[1] };
+    });
+    this.props.navigation.navigate('Home', { decodedPoly });
   };
 }
