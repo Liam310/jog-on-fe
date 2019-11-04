@@ -18,10 +18,10 @@ export const getFlags = async regionQueryObj => {
 };
 
 // ROUTES
-export const getRoutes = async () => {
+export const getRoutes = async ({ user_lat, user_long }) => {
   const {
     data: { routes }
-  } = await request.get('/routes');
+  } = await request.get('/routes', { params: { user_lat, user_long } });
   return routes;
 };
 
