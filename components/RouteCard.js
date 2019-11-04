@@ -50,7 +50,7 @@ const RouteCard = ({
   return (
     <Card
       onPress={() => {
-        handleRouteSelect(route_id, poly);
+        handleRouteSelect(poly);
       }}
     >
       <>
