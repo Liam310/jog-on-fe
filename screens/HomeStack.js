@@ -13,7 +13,10 @@ const HomeStack = createStackNavigator(
     SecondQuestion: SecondQuestionScreen,
     ThirdQuestion: ThirdQuestionScreen,
     NameRoute: NameRouteScreen,
-    ConfirmRouteAdded: ConfirmRouteAddedScreen
+    ConfirmRouteAdded: {
+      screen: ConfirmRouteAddedScreen,
+      navigationOptions: { gesturesEnabled: false }
+    }
   },
   { headerMode: 'none' }
 );
