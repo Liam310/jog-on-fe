@@ -143,7 +143,8 @@ export default class NameRouteScreen extends React.Component {
   }
 
   handleRoutePosting = () => {
-    const actualRoute = this.props.navigation.getParam('actualRoute');
+    const { navigation } = this.props;
+    const actualRoute = navigation.getParam('actualRoute');
     const formattedCoords = actualRoute.map(coord => {
       return [coord.latitude, coord.longitude];
     });
@@ -157,6 +158,13 @@ export default class NameRouteScreen extends React.Component {
       length_in_km: routeLength
     };
 
-    api.postRoute(newRoute);
+    api
+      .postRoute(newRoute)
+      .then(() => {
+        api.postFlags({ flags: navigation.getParam('flags') });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 }

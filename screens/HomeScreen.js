@@ -70,15 +70,17 @@ export default class HomeScreen extends React.Component {
             strokeWidth={6}
           />
           {showFlags &&
-            existingFlags.map(({ latitude, longitude, flag_type_id }, index) => {
-              return (
-                <Marker
-                  coordinate={{ latitude, longitude }}
-                  key={index}
-                  image={flagRef[flag_type_id]}
-                />
-              );
-            })}
+            existingFlags.map(
+              ({ latitude, longitude, flag_type_id }, index) => {
+                return (
+                  <Marker
+                    coordinate={{ latitude, longitude }}
+                    key={index}
+                    image={flagRef[flag_type_id]}
+                  />
+                );
+              }
+            )}
         </MapView>
         <ToggleFlags handleToggle={this.handleToggle} />
         <TouchableHighlight
