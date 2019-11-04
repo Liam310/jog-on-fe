@@ -5,6 +5,7 @@ import Constants from 'expo-constants';
 import MudPin from '../assets/mapPins/MudPinScaled.png';
 import flagRef from '../utils/flagRefObj';
 import { convertRouteToRegion } from '../utils/utils';
+import { findNearest } from 'geolib';
 
 export default class FirstQuestionScreen extends React.Component {
   state = {
@@ -134,11 +135,15 @@ export default class FirstQuestionScreen extends React.Component {
   }
 
   handleMapPress = async ({ nativeEvent: { coordinate } }) => {
+    const nearestCoordinate = findNearest(
+      coordinate,
+      this.props.navigation.getParam('actualRoute', [])
+    );
     const newFlag = {
       user_id: 1,
       flag_type_id: 1,
-      latitude: coordinate.latitude,
-      longitude: coordinate.longitude
+      latitude: nearestCoordinate.latitude,
+      longitude: nearestCoordinate.longitude
     };
 
     this.setState(currentState => {
