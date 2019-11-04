@@ -66,6 +66,7 @@ export default class HomeScreen extends React.Component {
         {/* <Text>Home</Text> */}
         {/* <Text>route: {navigation.getParam('route', 'no route')}</Text> */}
         <MapView
+          followsUserLocation={true}
           rotateEnabled={false}
           showsUserLocation={true}
           style={{
