@@ -58,6 +58,7 @@ export default class SecondQuestionScreen extends React.Component {
                     coordinate={{ latitude, longitude }}
                     key={index}
                     image={DarkPin}
+                    opacity={0.5}
                   />
                 );
               }
