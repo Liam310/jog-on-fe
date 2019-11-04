@@ -58,6 +58,9 @@ export default class HomeScreen extends React.Component {
         <NavigationEvents
           onDidFocus={() => {
             this.updateChosenRoute(chosenRoute);
+            this.setState({
+              actualRoute: []
+            });
           }}
         />
         {/* <Text>Home</Text> */}
