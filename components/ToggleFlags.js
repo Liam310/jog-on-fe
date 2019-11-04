@@ -1,8 +1,9 @@
 import React from 'react';
 import { TouchableHighlight, View, Text } from 'react-native';
 import Constants from 'expo-constants';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default function ToggleFlags({ handleToggle }) {
+export default function ToggleFlags({ handleToggle, showFlags }) {
   return (
     <TouchableHighlight
       onPress={handleToggle}
@@ -10,20 +11,25 @@ export default function ToggleFlags({ handleToggle }) {
         position: 'absolute',
         top: 15 + Constants.statusBarHeight,
         right: 15,
-        borderRadius: 50000
+        borderRadius: 500
       }}
     >
       <View
         style={{
-          backgroundColor: '#848484',
-          borderRadius: 50000,
+          backgroundColor: showFlags ? '#3cc1c7' : '#848484',
+          borderRadius: 500,
           paddingLeft: 15,
           paddingRight: 15,
-          paddingTop: 15,
-          paddingBottom: 15
+          paddingTop: 18,
+          paddingBottom: 15,
+          width: 70,
+          height: 70,
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center'
         }}
       >
-        <Text style={{ color: 'white', fontSize: 15 }}>FLAGS</Text>
+        <MaterialCommunityIcons name="map-marker" size={36} color="white" />
       </View>
     </TouchableHighlight>
   );
