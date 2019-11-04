@@ -2,11 +2,11 @@ import React from 'react';
 import { Text, View, Dimensions, TouchableHighlight } from 'react-native';
 import MapView, { Polyline, Marker } from 'react-native-maps';
 import Constants from 'expo-constants';
-import * as api from '../utils/api';
 import GonePin from '../assets/mapPins/GonePinScaled.png';
 import flagRef from '../utils/flagRefObj';
 import { convertRouteToRegion } from '../utils/utils';
 import { MaterialIcons } from '@expo/vector-icons';
+import { findNearest } from 'geolib';
 
 export default class ThirdQuestionScreen extends React.Component {
   state = {
@@ -145,11 +145,15 @@ export default class ThirdQuestionScreen extends React.Component {
   }
 
   handleMapPress = async ({ nativeEvent: { coordinate } }) => {
+    const nearestCoordinate = findNearest(
+      coordinate,
+      this.props.navigation.getParam('actualRoute', [])
+    );
     const newFlag = {
       user_id: 1,
       flag_type_id: 3,
-      latitude: coordinate.latitude,
-      longitude: coordinate.longitude
+      latitude: nearestCoordinate.latitude,
+      longitude: nearestCoordinate.longitude
     };
 
     this.setState(currentState => {
