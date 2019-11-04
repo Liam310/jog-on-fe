@@ -5,6 +5,7 @@ import { NavigationEvents } from 'react-navigation';
 import RouteCard from '../components/RouteCard';
 import Constants from 'expo-constants';
 import * as polyline from '@mapbox/polyline';
+import * as Location from 'expo-location';
 
 export default class RouteList extends React.Component {
   state = {
@@ -24,7 +25,7 @@ export default class RouteList extends React.Component {
           alignItems: 'center'
         }}
       >
-        <NavigationEvents onDidFocus={this.fetchRoutes} />
+        <NavigationEvents onDidFocus={this.getCurrentLocation} />
         {routes.map(route => {
           return (
             <RouteCard
@@ -39,8 +40,8 @@ export default class RouteList extends React.Component {
     );
   }
 
-  fetchRoutes = () => {
-    api.getRoutes().then(routes => {
+  fetchRoutes = currentLocation => {
+    api.getRoutes(currentLocation).then(routes => {
       this.setState({ routes });
     });
   };
@@ -50,5 +51,14 @@ export default class RouteList extends React.Component {
       return { latitude: coordinate[0], longitude: coordinate[1] };
     });
     this.props.navigation.navigate('Home', { decodedPoly });
+  };
+
+  getCurrentLocation = async () => {
+    const initialLocation = await Location.getCurrentPositionAsync({});
+
+    this.fetchRoutes({
+      user_lat: initialLocation.latitude,
+      user_long: initialLocation.longitude
+    });
   };
 }
