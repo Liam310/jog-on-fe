@@ -58,6 +58,7 @@ export default class FirstQuestionScreen extends React.Component {
                     coordinate={{ latitude, longitude }}
                     key={index}
                     image={MudPin}
+                    opacity={0.5}
                   />
                 );
               }

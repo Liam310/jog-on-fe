@@ -59,6 +59,7 @@ export default class ThirdQuestionScreen extends React.Component {
                     coordinate={{ latitude, longitude }}
                     key={index}
                     image={GonePin}
+                    opacity={0.5}
                   />
                 );
               }
