@@ -3,7 +3,7 @@ import { Text, View, TouchableHighlight } from 'react-native';
 import styled from 'styled-components/native';
 import FlagBox from '../components/FlagBox';
 
-const Card = styled.View`
+const Card = styled.TouchableHighlight`
   background-color: #3cc1c7;
   height: 100;
   width: 93%;
@@ -42,31 +42,38 @@ const DistFlagWrap = styled.View`
 `;
 
 const RouteCard = ({
-  route: { route_id, length_in_km, flag_type_ids },
-  distanceUnit
+  route: { route_id, length_in_km, flag_type_ids, poly },
+  distanceUnit,
+  handleRouteSelect
 }) => {
   const distanceStyle = { width: 60 + Math.ceil(length_in_km / 10) * 15 };
   return (
-    <Card>
-      <Title>{route_id}</Title>
-      <DistFlagWrap>
-        <DistanceWrap>
-          {distanceUnit === 'km' ? (
-            <Distance style={distanceStyle}>
-              {length_in_km.toFixed(1)} Km
-            </Distance>
+    <Card
+      onPress={() => {
+        handleRouteSelect(route_id, poly);
+      }}
+    >
+      <>
+        <Title>{route_id}</Title>
+        <DistFlagWrap>
+          <DistanceWrap>
+            {distanceUnit === 'km' ? (
+              <Distance style={distanceStyle}>
+                {length_in_km.toFixed(1)} Km
+              </Distance>
+            ) : (
+              <Distance style={distanceStyle}>
+                {(length_in_km * 0.621371).toFixed(1)} Mi
+              </Distance>
+            )}
+          </DistanceWrap>
+          {flag_type_ids[0] !== null ? (
+            <FlagBox flags={flag_type_ids} />
           ) : (
-            <Distance style={distanceStyle}>
-              {(length_in_km * 0.621371).toFixed(1)} Mi
-            </Distance>
+            <Text />
           )}
-        </DistanceWrap>
-        {flag_type_ids[0] !== null ? (
-          <FlagBox flags={flag_type_ids} />
-        ) : (
-          <Text />
-        )}
-      </DistFlagWrap>
+        </DistFlagWrap>
+      </>
     </Card>
   );
 };
