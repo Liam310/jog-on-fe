@@ -103,15 +103,10 @@ export default class ThirdQuestionScreen extends React.Component {
         </View>
         <TouchableHighlight
           onPress={() => {
-            api
-              .postFlags({ flags: this.state.flags })
-              .then(() => {
-                navigation.navigate('NameRoute', {
-                  actualRoute: navigation.getParam('actualRoute'),
-                  flags: this.state.flags
-                });
-              })
-              .catch(err => console.log(err));
+            navigation.navigate('NameRoute', {
+              actualRoute: navigation.getParam('actualRoute'),
+              flags: this.state.flags
+            });
           }}
           style={{
             position: 'absolute',
