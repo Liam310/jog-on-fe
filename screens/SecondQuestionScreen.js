@@ -127,7 +127,11 @@ export default class SecondQuestionScreen extends React.Component {
               alignItems: 'center'
             }}
           >
-            <Text style={{ color: 'white', fontSize: 32 }}>></Text>
+            <MaterialIcons
+              name="keyboard-arrow-right"
+              size={46}
+              color="white"
+            />
           </View>
         </TouchableHighlight>
       </View>
