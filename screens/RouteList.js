@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, View, Text } from 'react-native';
 import * as api from '../utils/api';
 import { NavigationEvents } from 'react-navigation';
 import RouteCard from '../components/RouteCard';
@@ -17,26 +17,41 @@ export default class RouteList extends React.Component {
     const { routes } = this.state;
     const distanceUnit = navigation.getParam('unit', 'km');
     return (
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingTop: Constants.statusBarHeight + 10,
-          paddingBottom: 60,
-          alignItems: 'center'
-        }}
-      >
-        <NavigationEvents onDidFocus={this.getCurrentLocation} />
-        {routes.map(route => {
-          return (
-            <RouteCard
-              key={route.route_id}
-              route={route}
-              distanceUnit={distanceUnit}
-              handleRouteSelect={this.handleRouteSelect}
-            />
-          );
-        })}
-      </ScrollView>
+      <>
+        <View
+          style={{
+            paddingTop: 10 + Constants.statusBarHeight,
+            paddingBottom: 10,
+            backgroundColor: '#ffffff'
+          }}
+        >
+          <Text
+            style={{ fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}
+          >
+            Routes
+          </Text>
+        </View>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingTop: 10,
+            paddingBottom: 60,
+            alignItems: 'center'
+          }}
+        >
+          <NavigationEvents onDidFocus={this.getCurrentLocation} />
+          {routes.map(route => {
+            return (
+              <RouteCard
+                key={route.route_id}
+                route={route}
+                distanceUnit={distanceUnit}
+                handleRouteSelect={this.handleRouteSelect}
+              />
+            );
+          })}
+        </ScrollView>
+      </>
     );
   }
 
