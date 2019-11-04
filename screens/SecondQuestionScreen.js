@@ -6,6 +6,7 @@ import DarkPin from '../assets/mapPins/DarkPinScaled.png';
 import flagRef from '../utils/flagRefObj';
 import { convertRouteToRegion } from '../utils/utils';
 import { findNearest } from 'geolib';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default class SecondQuestionScreen extends React.Component {
   state = {
