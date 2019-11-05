@@ -69,20 +69,15 @@ export default class HomeScreen extends React.Component {
             });
           }}
         />
-        {/* <Text>Home</Text> */}
-        {/* <Text>route: {navigation.getParam('route', 'no route')}</Text> */}
         <MapView
           followsUserLocation={gettingLocation}
           rotateEnabled={false}
           showsUserLocation={true}
           style={{
             width: Dimensions.get('window').width,
-            // height: Dimensions.get('window').height
             flex: 1
           }}
           region={mapRegion}
-          // onLongPress={this.handleMapPress}
-          // onMapReady={this.handleMapReady}
           onRegionChangeComplete={this.handleRegionChange}
         >
           <Polyline
@@ -150,11 +145,6 @@ export default class HomeScreen extends React.Component {
       });
     } else {
       this.getLocationAsync();
-      // this.fetchFlags();
-      // // api.getAllUsers();
-      // this.sendAllFlags();
-      // this.sendRoutes();
-      // // api.postRoute();
     }
   }
 
