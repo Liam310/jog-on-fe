@@ -107,7 +107,6 @@ export default class ThirdQuestionScreen extends React.Component {
               }}
               style={{
                 borderRadius: 500,
-                flex: 1,
                 marginBottom: 8,
                 width: 60,
                 height: 60
@@ -144,8 +143,8 @@ export default class ThirdQuestionScreen extends React.Component {
               }}
             >
               <Text style={{ color: 'white', fontSize: 16 }}>
-                Press and hold on the route to place a marker, then press next
-                to move onto the next question
+                Press and hold on the route to place a marker, then press next to
+                move onto the next question
               </Text>
             </View>
           </View>
