@@ -62,107 +62,129 @@ export default class NameRouteScreen extends React.Component {
           style={{
             position: 'absolute',
             top: 15 + Constants.statusBarHeight,
-            borderRadius: 5,
-            backgroundColor: '#3cc1c7',
-            marginLeft: 15,
-            marginRight: 15,
-            paddingLeft: 15,
-            paddingRight: 15,
-            paddingTop: 10,
-            paddingBottom: 10
+            flex: 1,
+            justifyContent: 'space-between',
+            bottom: 30
           }}
         >
-          <Text style={{ color: 'white', fontSize: 20 }}>
-            Please enter a name for your route :)
-          </Text>
-        </View>
-        <TextInput
-          style={{
-            height: 40,
-            width: 300,
-            position: 'absolute',
-            top: 75 + Constants.statusBarHeight,
-            backgroundColor: 'white',
-            color: 'black'
-          }}
-          placeholder="Name your route"
-          onChangeText={actualRouteName => this.setState({ actualRouteName })}
-          value={this.state.actualRouteName}
-        />
-        {this.state.routeNameError && (
-          <View
+          {/* <View
             style={{
               position: 'absolute',
-              top: 150,
-              width: '75%',
-              backgroundColor: 'red',
-              paddingBottom: 2,
-              paddingTop: 2,
-              borderRadius: 3
+              top: 15 + Constants.statusBarHeight,
+              borderRadius: 5,
+              backgroundColor: '#3cc1c7',
+              marginLeft: 15,
+              marginRight: 15,
+              paddingLeft: 15,
+              paddingRight: 15,
+              paddingTop: 10,
+              paddingBottom: 10
             }}
           >
-            <Text
-              style={{
-                textAlign: 'center',
-                color: 'white',
-                fontSize: 15
-              }}
-            >
-              {this.state.routeNameError}
+            <Text style={{ color: 'white', fontSize: 20 }}>
+              Please enter a name for your route :)
             </Text>
+          </View> */}
+          <View style={{ alignItems: 'center' }}>
+            <TextInput
+              style={{
+                paddingLeft: 10,
+                borderStyle: 'solid',
+                borderColor: '#3cc1c7',
+                borderWidth: 2,
+                height: 40,
+                width: '110%',
+                backgroundColor: 'white',
+                color: 'black'
+              }}
+              placeholder="Enter a name for your route here..."
+              onChangeText={actualRouteName =>
+                this.setState({ actualRouteName })
+              }
+              value={this.state.actualRouteName}
+            />
+            {this.state.routeNameError && (
+              <View
+                style={{
+                  width: '75%',
+                  backgroundColor: 'red',
+                  paddingBottom: 2,
+                  paddingTop: 2,
+                  borderRadius: 3,
+                  marginTop: 3
+                }}
+              >
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: 'white',
+                    fontSize: 15
+                  }}
+                >
+                  {this.state.routeNameError}
+                </Text>
+              </View>
+            )}
           </View>
-        )}
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 25,
-            borderRadius: 5,
-            backgroundColor: '#848484',
-            marginLeft: 15,
-            marginRight: 15,
-            paddingLeft: 15,
-            paddingRight: 15,
-            paddingTop: 10,
-            paddingBottom: 10
-          }}
-        >
-          <Text style={{ color: 'white', fontSize: 18 }}>
-            Press done to submit your route
-          </Text>
-        </View>
-        <TouchableHighlight
-          onPress={() => {
-            if (this.state.actualRouteName.length < 4) {
-              this.setState({
-                routeNameError:
-                  'Route name required - must be more than 3 characters'
-              });
-            } else {
-              this.handleRoutePosting();
-              navigation.navigate('ConfirmRouteAdded', {
-                actualRouteName: this.state.actualRouteName
-              });
-            }
-          }}
-          style={{
-            position: 'absolute',
-            bottom: 125,
-            borderRadius: 500
-          }}
-        >
           <View
             style={{
-              backgroundColor: '#848484',
-              borderRadius: 50000,
-              paddingLeft: 35,
-              paddingRight: 35,
-              paddingTop: 15,
-              paddingBottom: 15
+              justifyContent: 'center',
+              alignItems: 'center'
             }}
           >
-            <Text style={{ color: 'white', fontSize: 20 }}>DONE</Text>
+            <TouchableHighlight
+              onPress={() => {
+                if (this.state.actualRouteName.length < 4) {
+                  this.setState({
+                    routeNameError:
+                      'Route name required - must be more than 3 characters'
+                  });
+                } else {
+                  this.handleRoutePosting();
+                  navigation.navigate('ConfirmRouteAdded', {
+                    actualRouteName: this.state.actualRouteName
+                  });
+                }
+              }}
+              style={{
+                borderRadius: 500
+              }}
+            >
+              <View
+                style={{
+                  backgroundColor: '#848484',
+                  borderRadius: 500,
+                  paddingLeft: 35,
+                  paddingRight: 35,
+                  paddingTop: 12,
+                  paddingBottom: 12,
+                  marginBottom: 7
+                }}
+              >
+                <Text style={{ color: 'white', fontSize: 20 }}>DONE</Text>
+              </View>
+            </TouchableHighlight>
+            <View
+              style={{
+                width: '110%',
+                borderRadius: 5,
+                backgroundColor: '#848484',
+                marginLeft: 15,
+                marginRight: 15,
+                paddingLeft: 15,
+                paddingRight: 15,
+                paddingTop: 10,
+                paddingBottom: 10
+              }}
+            >
+              <Text
+                style={{ color: 'white', fontSize: 16, textAlign: 'center' }}
+              >
+                Press done to submit your route
+              </Text>
+            </View>
           </View>
-        </TouchableHighlight>
+        </View>
       </View>
     );
   }
