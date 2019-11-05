@@ -1,25 +1,13 @@
-// import React from 'react';
-// import { Text, Button, View } from 'react-native';
-
-// export default class UserAuthScreen extends React.Component {
-//   render() {
-//     return (
-//       <View style={{ flex: 1 }}>
-//         <Text>User Auth Screen</Text>
-//         <Button
-//           title="Go to tab navigator"
-//           onPress={() => {
-//             this.props.navigation.navigate('TabNavigator');
-//           }}
-//         />
-//       </View>
-//     );
-//   }
-// }
-
 import React from 'react';
-import { StyleSheet, Text, View, Modal } from 'react-native';
-import { Input, Button, ButtonGroup } from 'react-native-elements';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Modal,
+  TouchableHighlight
+} from 'react-native';
+import { Input, ButtonGroup } from 'react-native-elements';
+import Constants from 'expo-constants';
 import Amplify, { Auth } from 'aws-amplify';
 
 export default class UserAuthScreen extends React.Component {
@@ -76,17 +64,22 @@ export default class UserAuthScreen extends React.Component {
 
   render() {
     return (
-      <View>
+      <View
+        style={{
+          paddingTop: Constants.statusBarHeight,
+          backgroundColor: '#ffffff'
+        }}
+      >
         <ButtonGroup
           onPress={this.updateIndex}
           selectedIndex={this.state.selectedIndex}
           buttons={this.buttons}
+          selectedButtonStyle={{ backgroundColor: '#3cc1c7' }}
         />
         {this.state.selectedIndex === 0 ? (
           <View>
             <Input
               label="Email"
-              leftIcon={{ type: 'font-awesome', name: 'envelope' }}
               onChangeText={
                 // Set this.state.email to the value in this Input box
                 value => this.setState({ email: value })
@@ -95,7 +88,6 @@ export default class UserAuthScreen extends React.Component {
             />
             <Input
               label="Password"
-              leftIcon={{ type: 'font-awesome', name: 'lock' }}
               onChangeText={
                 // Set this.state.email to the value in this Input box
                 value => this.setState({ password: value })
@@ -105,7 +97,6 @@ export default class UserAuthScreen extends React.Component {
             />
             <Input
               label="Confirm Password"
-              leftIcon={{ type: 'font-awesome', name: 'lock' }}
               onChangeText={
                 // Set this.state.email to the value in this Input box
                 value => this.setState({ confirmPassword: value })
@@ -113,18 +104,71 @@ export default class UserAuthScreen extends React.Component {
               placeholder="p@ssw0rd123"
               secureTextEntry
             />
-            <Button title="Submit" onPress={this.handleSignUp} />
+            <View style={{ alignItems: 'center' }}>
+              <TouchableHighlight
+                style={{
+                  borderRadius: 500,
+                  width: 150,
+                  height: 60,
+                  marginTop: 20
+                }}
+                onPress={this.handleSignUp}
+              >
+                <View
+                  style={{
+                    backgroundColor: '#3cc1c7',
+                    borderRadius: 500,
+                    paddingLeft: 35,
+                    paddingRight: 35,
+                    paddingTop: 15,
+                    paddingBottom: 15,
+                    width: 150,
+                    height: 60,
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <Text style={{ color: 'white', fontSize: 20 }}>Submit</Text>
+                </View>
+              </TouchableHighlight>
+            </View>
             <Modal visible={this.state.modalVisible}>
               <View style={styles.container}>
                 <Input
                   label="Confirmation Code"
-                  leftIcon={{ type: 'font-awesome', name: 'lock' }}
                   onChangeText={
                     // Set this.state.confirmationCode to the value in this Input box
                     value => this.setState({ confirmationCode: value })
                   }
                 />
-                <Button title="Submit" onPress={this.handleConfirmationCode} />
+                <TouchableHighlight
+                  style={{
+                    borderRadius: 500,
+                    width: 150,
+                    height: 60,
+                    marginTop: 20
+                  }}
+                  onPress={this.handleConfirmationCode}
+                >
+                  <View
+                    style={{
+                      backgroundColor: '#3cc1c7',
+                      borderRadius: 500,
+                      paddingLeft: 35,
+                      paddingRight: 35,
+                      paddingTop: 15,
+                      paddingBottom: 15,
+                      width: 150,
+                      height: 60,
+                      flex: 1,
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}
+                  >
+                    <Text style={{ color: 'white', fontSize: 20 }}>Submit</Text>
+                  </View>
+                </TouchableHighlight>
               </View>
             </Modal>
           </View>
@@ -132,7 +176,7 @@ export default class UserAuthScreen extends React.Component {
           <View>
             <Input
               label="Email"
-              leftIcon={{ type: 'font-awesome', name: 'envelope' }}
+              // leftIcon={{ type: 'font-awesome', name: 'envelope' }}
               onChangeText={
                 // Set this.state.email to the value in this Input box
                 value => this.setState({ email: value })
@@ -141,7 +185,7 @@ export default class UserAuthScreen extends React.Component {
             />
             <Input
               label="Password"
-              leftIcon={{ type: 'font-awesome', name: 'lock' }}
+              // leftIcon={{ type: 'font-awesome', name: 'lock' }}
               onChangeText={
                 // Set this.state.email to the value in this Input box
                 value => this.setState({ password: value })
@@ -149,7 +193,35 @@ export default class UserAuthScreen extends React.Component {
               placeholder="p@ssw0rd123"
               secureTextEntry
             />
-            <Button title="Submit" onPress={this.handleSignIn} />
+            <View style={{ alignItems: 'center' }}>
+              <TouchableHighlight
+                style={{
+                  borderRadius: 500,
+                  width: 150,
+                  height: 60,
+                  marginTop: 20
+                }}
+                onPress={this.handleSignIn}
+              >
+                <View
+                  style={{
+                    backgroundColor: '#3cc1c7',
+                    borderRadius: 500,
+                    paddingLeft: 35,
+                    paddingRight: 35,
+                    paddingTop: 15,
+                    paddingBottom: 15,
+                    width: 150,
+                    height: 60,
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <Text style={{ color: 'white', fontSize: 20 }}>Submit</Text>
+                </View>
+              </TouchableHighlight>
+            </View>
           </View>
         )}
       </View>
