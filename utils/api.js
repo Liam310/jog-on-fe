@@ -24,22 +24,19 @@ export const postFlags = flags => {
 };
 
 export const getFlags = regionQueryObj => {
-  return Auth.currentAuthenticatedUser().then(
-    ({
-      signInUserSession: {
-        accessToken: { jwtToken }
-      }
-    }) => {
-      return request
-        .get('/flags', {
-          params: regionQueryObj,
-          headers: { usertoken: jwtToken }
-        })
-        .then(({ data }) => {
-          return data;
-        });
-    }
-  );
+  return Auth.currentAuthenticatedUser()
+    .then(({ signInUserSession: { accessToken: { jwtToken } } }) => {
+      return request.get('/flags', {
+        params: regionQueryObj,
+        headers: { usertoken: jwtToken }
+      });
+    })
+    .then(({ data }) => {
+      return data;
+    })
+    .catch(err => {
+      console.log(err);
+    });
 
   // const { data } = await request.get('/flags', { params: regionQueryObj });
   // return data;
@@ -57,6 +54,9 @@ export const getRoutes = ({ user_lat, user_long, p }) => {
     })
     .then(({ data: { routes } }) => {
       return routes;
+    })
+    .catch(err => {
+      console.log(err);
     });
 };
 
@@ -69,6 +69,9 @@ export const postRoute = route => {
     })
     .then(routes => {
       return routes;
+    })
+    .catch(err => {
+      console.log(err);
     });
   // return request.post('/routes', route).catch(error => {
   //   console.log(error);
