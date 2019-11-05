@@ -70,70 +70,86 @@ export default class ThirdQuestionScreen extends React.Component {
           style={{
             position: 'absolute',
             top: 15 + Constants.statusBarHeight,
-            borderRadius: 5,
-            backgroundColor: '#3cc1c7',
-            marginLeft: 15,
-            marginRight: 15,
-            paddingLeft: 15,
-            paddingRight: 15,
-            paddingTop: 10,
-            paddingBottom: 10
-          }}
-        >
-          <Text style={{ color: 'white', fontSize: 20 }}>
-            Please mark any areas with no footpath
-          </Text>
-        </View>
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 25,
-            borderRadius: 5,
-            backgroundColor: '#848484',
-            marginLeft: 15,
-            marginRight: 15,
-            paddingLeft: 15,
-            paddingRight: 15,
-            paddingTop: 10,
-            paddingBottom: 10
-          }}
-        >
-          <Text style={{ color: 'white', fontSize: 18 }}>
-            Press and hold on the route to place a marker, then press next to
-            move onto the next question
-          </Text>
-        </View>
-        <TouchableHighlight
-          onPress={() => {
-            navigation.navigate('NameRoute', {
-              actualRoute: navigation.getParam('actualRoute'),
-              flags: this.state.flags
-            });
-          }}
-          style={{
-            position: 'absolute',
-            bottom: 125,
-            borderRadius: 500
+            flex: 1,
+            justifyContent: 'space-between',
+            bottom: 30
           }}
         >
           <View
             style={{
-              backgroundColor: '#848484',
-              borderRadius: 500,
-              width: 80,
-              height: 80,
-              flex: 1,
-              justifyContent: 'center',
+              borderRadius: 5,
+              backgroundColor: '#3cc1c7',
+              marginLeft: 15,
+              marginRight: 15,
+              paddingLeft: 15,
+              paddingRight: 15,
+              paddingTop: 10,
+              paddingBottom: 10
+            }}
+          >
+            <Text style={{ color: 'white', fontSize: 18 }}>
+              Please mark any areas with no footpath
+            </Text>
+          </View>
+          <View
+            style={{
+              height: 148,
+              justifyContent: 'space-between',
               alignItems: 'center'
             }}
           >
-            <MaterialIcons
-              name="keyboard-arrow-right"
-              size={46}
-              color="white"
-            />
+            <TouchableHighlight
+              onPress={() => {
+                navigation.navigate('NameRoute', {
+                  actualRoute: navigation.getParam('actualRoute'),
+                  flags: this.state.flags
+                });
+              }}
+              style={{
+                borderRadius: 500,
+                flex: 1,
+                marginBottom: 8,
+                width: 60,
+                height: 60
+              }}
+            >
+              <View
+                style={{
+                  backgroundColor: '#848484',
+                  borderRadius: 500,
+                  width: 60,
+                  height: 60,
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <MaterialIcons
+                  name="keyboard-arrow-right"
+                  size={54}
+                  color="white"
+                />
+              </View>
+            </TouchableHighlight>
+            <View
+              style={{
+                borderRadius: 5,
+                backgroundColor: '#848484',
+                marginLeft: 15,
+                marginRight: 15,
+                paddingLeft: 15,
+                paddingRight: 15,
+                paddingTop: 10,
+                paddingBottom: 10
+              }}
+            >
+              <Text style={{ color: 'white', fontSize: 16 }}>
+                Press and hold on the route to place a marker, then press next
+                to move onto the next question
+              </Text>
+            </View>
           </View>
-        </TouchableHighlight>
+        </View>
       </View>
     );
   }
