@@ -4,7 +4,8 @@ import {
   Text,
   View,
   Modal,
-  TouchableHighlight
+  TouchableHighlight,
+  TextInput
 } from 'react-native';
 import { Input, ButtonGroup } from 'react-native-elements';
 import Constants from 'expo-constants';
@@ -28,6 +29,9 @@ export default class UserAuthScreen extends React.Component {
   handleSignIn = () => {
     const { email, password } = this.state;
     Auth.signIn(email, password)
+      .then(() => {
+        this.setState({ password: '' });
+      })
       // If we are successful, navigate to Home screen
       .then(user => this.props.navigation.navigate('TabNavigator'))
       // On failure, display error in console
@@ -53,10 +57,13 @@ export default class UserAuthScreen extends React.Component {
   };
   handleConfirmationCode = () => {
     const { email, confirmationCode } = this.state;
-    console.log(email, confirmationCode);
     Auth.confirmSignUp(email, confirmationCode, {})
       .then(() => {
-        this.setState({ modalVisible: false });
+        this.setState({
+          modalVisible: false,
+          password: '',
+          confirmPassword: ''
+        });
         this.props.navigation.navigate('TabNavigator');
       })
       .catch(err => console.log(err));
@@ -66,7 +73,7 @@ export default class UserAuthScreen extends React.Component {
     return (
       <View
         style={{
-          paddingTop: Constants.statusBarHeight,
+          paddingTop: 10 + Constants.statusBarHeight,
           backgroundColor: '#ffffff'
         }}
       >
@@ -77,33 +84,75 @@ export default class UserAuthScreen extends React.Component {
           selectedButtonStyle={{ backgroundColor: '#3cc1c7' }}
         />
         {this.state.selectedIndex === 0 ? (
-          <View>
-            <Input
-              label="Email"
-              onChangeText={
-                // Set this.state.email to the value in this Input box
-                value => this.setState({ email: value })
-              }
-              placeholder="my@email.com"
-            />
-            <Input
-              label="Password"
-              onChangeText={
-                // Set this.state.email to the value in this Input box
-                value => this.setState({ password: value })
-              }
-              placeholder="p@ssw0rd123"
-              secureTextEntry
-            />
-            <Input
-              label="Confirm Password"
-              onChangeText={
-                // Set this.state.email to the value in this Input box
-                value => this.setState({ confirmPassword: value })
-              }
-              placeholder="p@ssw0rd123"
-              secureTextEntry
-            />
+          <View
+            style={{
+              marginTop: 20,
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <View style={{ width: '90%' }}>
+              <Text style={{ fontSize: 18 }}>Email</Text>
+              <TextInput
+                style={{
+                  paddingLeft: 10,
+                  borderStyle: 'solid',
+                  borderColor: '#3cc1c7',
+                  borderWidth: 2,
+                  height: 40,
+                  backgroundColor: 'white',
+                  color: 'black',
+                  marginTop: 10,
+                  marginBottom: 10
+                }}
+                onChangeText={value => this.setState({ email: value })}
+                placeholder="my@email.com"
+                autoCapitalize="none"
+                autoCorrect={false}
+              ></TextInput>
+            </View>
+            <View style={{ width: '90%' }}>
+              <Text style={{ fontSize: 18 }}>Password</Text>
+              <TextInput
+                style={{
+                  paddingLeft: 10,
+                  borderStyle: 'solid',
+                  borderColor: '#3cc1c7',
+                  borderWidth: 2,
+                  height: 40,
+                  backgroundColor: 'white',
+                  color: 'black',
+                  marginTop: 10,
+                  marginBottom: 10
+                }}
+                onChangeText={value => this.setState({ password: value })}
+                placeholder="p@ssw0rd123"
+                secureTextEntry
+                value={this.state.password}
+              ></TextInput>
+            </View>
+            <View style={{ width: '90%' }}>
+              <Text style={{ fontSize: 18 }}>Confirm Password</Text>
+              <TextInput
+                style={{
+                  paddingLeft: 10,
+                  borderStyle: 'solid',
+                  borderColor: '#3cc1c7',
+                  borderWidth: 2,
+                  height: 40,
+                  backgroundColor: 'white',
+                  color: 'black',
+                  marginTop: 10,
+                  marginBottom: 10
+                }}
+                onChangeText={value =>
+                  this.setState({ confirmPassword: value })
+                }
+                placeholder="p@ssw0rd123"
+                secureTextEntry
+                value={this.state.confirmPassword}
+              ></TextInput>
+            </View>
             <View style={{ alignItems: 'center' }}>
               <TouchableHighlight
                 style={{
@@ -135,13 +184,26 @@ export default class UserAuthScreen extends React.Component {
             </View>
             <Modal visible={this.state.modalVisible}>
               <View style={styles.container}>
-                <Input
-                  label="Confirmation Code"
-                  onChangeText={
-                    // Set this.state.confirmationCode to the value in this Input box
-                    value => this.setState({ confirmationCode: value })
-                  }
-                />
+                <View style={{ width: '90%' }}>
+                  <Text style={{ fontSize: 18 }}>Confirmation Code</Text>
+                  <TextInput
+                    style={{
+                      paddingLeft: 10,
+                      borderStyle: 'solid',
+                      borderColor: '#3cc1c7',
+                      borderWidth: 2,
+                      height: 40,
+                      backgroundColor: 'white',
+                      color: 'black',
+                      marginTop: 10,
+                      marginBottom: 10
+                    }}
+                    onChangeText={value =>
+                      this.setState({ confirmationCode: value })
+                    }
+                  ></TextInput>
+                </View>
+
                 <TouchableHighlight
                   style={{
                     borderRadius: 500,
@@ -173,26 +235,54 @@ export default class UserAuthScreen extends React.Component {
             </Modal>
           </View>
         ) : (
-          <View>
-            <Input
-              label="Email"
-              // leftIcon={{ type: 'font-awesome', name: 'envelope' }}
-              onChangeText={
-                // Set this.state.email to the value in this Input box
-                value => this.setState({ email: value })
-              }
-              placeholder="my@email.com"
-            />
-            <Input
-              label="Password"
-              // leftIcon={{ type: 'font-awesome', name: 'lock' }}
-              onChangeText={
-                // Set this.state.email to the value in this Input box
-                value => this.setState({ password: value })
-              }
-              placeholder="p@ssw0rd123"
-              secureTextEntry
-            />
+          <View
+            style={{
+              marginTop: 20,
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <View style={{ width: '90%' }}>
+              <Text style={{ fontSize: 18 }}>Email</Text>
+              <TextInput
+                style={{
+                  paddingLeft: 10,
+                  borderStyle: 'solid',
+                  borderColor: '#3cc1c7',
+                  borderWidth: 2,
+                  height: 40,
+                  backgroundColor: 'white',
+                  color: 'black',
+                  marginTop: 10,
+                  marginBottom: 10
+                }}
+                onChangeText={value => this.setState({ email: value })}
+                placeholder="my@email.com"
+                autoCapitalize="none"
+                autoCorrect={false}
+              ></TextInput>
+            </View>
+            <View style={{ width: '90%' }}>
+              <Text style={{ fontSize: 18 }}>Password</Text>
+              <TextInput
+                style={{
+                  paddingLeft: 10,
+                  borderStyle: 'solid',
+                  borderColor: '#3cc1c7',
+                  borderWidth: 2,
+                  height: 40,
+                  backgroundColor: 'white',
+                  color: 'black',
+                  marginTop: 10,
+                  marginBottom: 10
+                }}
+                onChangeText={value => this.setState({ password: value })}
+                placeholder="p@ssw0rd123"
+                secureTextEntry
+                value={this.state.password}
+              ></TextInput>
+            </View>
+
             <View style={{ alignItems: 'center' }}>
               <TouchableHighlight
                 style={{

@@ -19,35 +19,19 @@ export const getFlags = async regionQueryObj => {
 };
 
 // ROUTES
-// export const getRoutes = async ({ user_lat, user_long }) => {
-//   const {
-//     signInUserSession: {
-//       accessToken: { jwtToken }
-//     }
-//   } = await Auth.currentAuthenticatedUser();
-//   console.log(jwtToken);
 
-//   const {
-//     data: { routes }
-//   } = await request.get('/routes', {
-//     params: { user_lat, user_long },
-//     // headers: { userKey: jwtToken }
-//     headers: { userToken: jwtToken }
-//   });
-//   return routes;
-// };
-
-export const getRoutes = ({ user_lat, user_long }) => {
+export const getRoutes = ({ user_lat, user_long, p }) => {
   return Auth.currentAuthenticatedUser()
     .then(({ signInUserSession: { accessToken: { jwtToken } } }) => {
       return request.get('/routes', {
-        params: { user_lat, user_long },
+        params: { user_lat, user_long, p },
         headers: { usertoken: jwtToken }
       });
     })
     .then(({ data: { routes } }) => {
       return routes;
     });
+
 };
 
 export const postRoute = route => {
