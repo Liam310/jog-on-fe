@@ -9,13 +9,20 @@ import * as Location from 'expo-location';
 
 export default class RouteList extends React.Component {
   state = {
-    routes: []
+    routes: [],
+    p: 1,
+    loading: true
   };
 
   render() {
     const { navigation } = this.props;
     const { routes } = this.state;
     const distanceUnit = navigation.getParam('unit', 'km');
+    isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
+      return (
+        layoutMeasurement.height + contentOffset.y >= contentSize.height - 20
+      );
+    };
     return (
       <>
         <View
@@ -32,6 +39,11 @@ export default class RouteList extends React.Component {
           </Text>
         </View>
         <ScrollView
+          onScroll={({ nativeEvent }) => {
+            if (isCloseToBottom(nativeEvent)) {
+              this.handleBottom;
+            }
+          }}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             paddingTop: 10,
@@ -57,9 +69,20 @@ export default class RouteList extends React.Component {
 
   fetchRoutes = currentLocation => {
     // console.log(currentLocation);
-    api.getRoutes(currentLocation).then(routes => {
+    api.getRoutes({ ...currentLocation, p: this.state.p }).then(routes => {
       // console.log(routes);
-      this.setState({ routes });
+      this.setState(currentState => {
+        newRoutes = [];
+        routes.forEach(route => {
+          if (!currentState.routes.includes(route)) {
+            newRoutes.push(route);
+          }
+        });
+        return {
+          routes: [...currentState.routes, ...newRoutes],
+          loading: false
+        };
+      });
     });
   };
 
@@ -77,5 +100,15 @@ export default class RouteList extends React.Component {
       user_lat: initialLocation.coords.latitude,
       user_long: initialLocation.coords.longitude
     });
+  };
+  handleBottom = () => {
+    this.setState(
+      currentState => {
+        return { p: currentState.p + 1, loading: true };
+      },
+      () => {
+        this.fetchRoutes(currentLocation);
+      }
+    );
   };
 }
