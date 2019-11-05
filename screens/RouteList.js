@@ -38,10 +38,10 @@ export default class RouteList extends React.Component {
             Routes
           </Text>
         </View>
-        <ScrollView
+        <ScrollView scrollEventThrottle="8"
           onScroll={({ nativeEvent }) => {
-            if (isCloseToBottom(nativeEvent)) {
-              this.handleBottom;
+            if (isCloseToBottom(nativeEvent) && this.state.loading === false) {
+              this.handleBottom();
             }
           }}
           showsVerticalScrollIndicator={false}
@@ -68,13 +68,12 @@ export default class RouteList extends React.Component {
   }
 
   fetchRoutes = currentLocation => {
-    // console.log(currentLocation);
     api.getRoutes({ ...currentLocation, p: this.state.p }).then(routes => {
       // console.log(routes);
       this.setState(currentState => {
         newRoutes = [];
         routes.forEach(route => {
-          if (!currentState.routes.includes(route)) {
+          if (!currentState.routes.map(route=>route.route_id).includes(route.route_id)) {
             newRoutes.push(route);
           }
         });
@@ -107,7 +106,7 @@ export default class RouteList extends React.Component {
         return { p: currentState.p + 1, loading: true };
       },
       () => {
-        this.fetchRoutes(currentLocation);
+        this.fetchRoutes(this.getCurrentLocation);
       }
     );
   };
