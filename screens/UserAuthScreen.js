@@ -100,6 +100,8 @@ export default class UserAuthScreen extends React.Component {
                 }}
                 onChangeText={value => this.setState({ email: value })}
                 placeholder="my@email.com"
+                autoCapitalize="none"
+                autoCorrect={false}
               ></TextInput>
             </View>
             <View style={{ width: '90%' }}>
@@ -247,6 +249,8 @@ export default class UserAuthScreen extends React.Component {
                 }}
                 onChangeText={value => this.setState({ email: value })}
                 placeholder="my@email.com"
+                autoCapitalize="none"
+                autoCorrect={false}
               ></TextInput>
             </View>
             <View style={{ width: '90%' }}>
