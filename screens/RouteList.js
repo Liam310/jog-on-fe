@@ -56,9 +56,7 @@ export default class RouteList extends React.Component {
   }
 
   fetchRoutes = currentLocation => {
-    // console.log(currentLocation);
     api.getRoutes(currentLocation).then(routes => {
-      // console.log(routes);
       this.setState({ routes });
     });
   };
@@ -72,7 +70,6 @@ export default class RouteList extends React.Component {
 
   getCurrentLocation = async () => {
     const initialLocation = await Location.getCurrentPositionAsync({});
-    // console.log(initialLocation);
     this.fetchRoutes({
       user_lat: initialLocation.coords.latitude,
       user_long: initialLocation.coords.longitude
