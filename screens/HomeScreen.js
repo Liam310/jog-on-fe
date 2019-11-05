@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Text,
-  View,
-  Dimensions,
-  TouchableHighlight,
-  Platform
-} from 'react-native';
+import { View, Dimensions, Platform } from 'react-native';
 import MapView, { Polyline, Marker } from 'react-native-maps';
 import Constants from 'expo-constants';
 import * as Location from 'expo-location';
@@ -18,6 +12,7 @@ import {
 } from '../utils/utils';
 import ToggleFlags from '../components/ToggleFlags';
 import { NavigationEvents } from 'react-navigation';
+import StartStop from '../components/StartStop';
 
 export default class HomeScreen extends React.Component {
   state = {
@@ -69,8 +64,6 @@ export default class HomeScreen extends React.Component {
             });
           }}
         />
-        {/* <Text>Home</Text> */}
-        {/* <Text>route: {navigation.getParam('route', 'no route')}</Text> */}
         <MapView
           followsUserLocation={gettingLocation}
           rotateEnabled={false}
@@ -110,34 +103,10 @@ export default class HomeScreen extends React.Component {
             )}
         </MapView>
         <ToggleFlags handleToggle={this.handleToggle} showFlags={showFlags} />
-        <TouchableHighlight
-          onPress={this.handlePress}
-          style={{
-            position: 'absolute',
-            bottom: 25,
-            borderRadius: 500
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: gettingLocation ? '#FF3D3D' : '#3cc1c7',
-              borderRadius: 500,
-              paddingLeft: 35,
-              paddingRight: 35,
-              paddingTop: 15,
-              paddingBottom: 15,
-              width: 150,
-              height: 60,
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
-          >
-            <Text style={{ color: 'white', fontSize: 20 }}>
-              {gettingLocation ? 'STOP' : 'START'}
-            </Text>
-          </View>
-        </TouchableHighlight>
+        <StartStop
+          handlePress={this.handlePress}
+          gettingLocation={gettingLocation}
+        />
       </View>
     );
   }
@@ -150,11 +119,6 @@ export default class HomeScreen extends React.Component {
       });
     } else {
       this.getLocationAsync();
-      // this.fetchFlags();
-      // // api.getAllUsers();
-      // this.sendAllFlags();
-      // this.sendRoutes();
-      // // api.postRoute();
     }
   }
 
