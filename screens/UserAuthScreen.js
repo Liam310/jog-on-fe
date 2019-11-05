@@ -79,29 +79,29 @@ export default class UserAuthScreen extends React.Component {
         {this.state.selectedIndex === 0 ? (
           <View>
             <Input
-              label="Email"
+              label='Email'
               onChangeText={
                 // Set this.state.email to the value in this Input box
                 value => this.setState({ email: value })
               }
-              placeholder="my@email.com"
+              placeholder='my@email.com'
             />
             <Input
-              label="Password"
+              label='Password'
               onChangeText={
                 // Set this.state.email to the value in this Input box
                 value => this.setState({ password: value })
               }
-              placeholder="p@ssw0rd123"
+              placeholder='p@ssw0rd123'
               secureTextEntry
             />
             <Input
-              label="Confirm Password"
+              label='Confirm Password'
               onChangeText={
                 // Set this.state.email to the value in this Input box
                 value => this.setState({ confirmPassword: value })
               }
-              placeholder="p@ssw0rd123"
+              placeholder='p@ssw0rd123'
               secureTextEntry
             />
             <View style={{ alignItems: 'center' }}>
@@ -136,7 +136,7 @@ export default class UserAuthScreen extends React.Component {
             <Modal visible={this.state.modalVisible}>
               <View style={styles.container}>
                 <Input
-                  label="Confirmation Code"
+                  label='Confirmation Code'
                   onChangeText={
                     // Set this.state.confirmationCode to the value in this Input box
                     value => this.setState({ confirmationCode: value })
@@ -175,22 +175,22 @@ export default class UserAuthScreen extends React.Component {
         ) : (
           <View>
             <Input
-              label="Email"
+              label='Email'
               // leftIcon={{ type: 'font-awesome', name: 'envelope' }}
               onChangeText={
                 // Set this.state.email to the value in this Input box
                 value => this.setState({ email: value })
               }
-              placeholder="my@email.com"
+              placeholder='my@email.com'
             />
             <Input
-              label="Password"
+              label='Password'
               // leftIcon={{ type: 'font-awesome', name: 'lock' }}
               onChangeText={
                 // Set this.state.email to the value in this Input box
                 value => this.setState({ password: value })
               }
-              placeholder="p@ssw0rd123"
+              placeholder='p@ssw0rd123'
               secureTextEntry
             />
             <View style={{ alignItems: 'center' }}>

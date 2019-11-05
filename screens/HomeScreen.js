@@ -77,13 +77,13 @@ export default class HomeScreen extends React.Component {
         >
           <Polyline
             coordinates={actualRoute}
-            strokeColor="#000000"
+            strokeColor='#000000'
             strokeWidth={6}
           />
 
           <Polyline
             coordinates={chosenRoute}
-            strokeColor="#0066FF"
+            strokeColor='#0066FF'
             strokeWidth={6}
           />
           {showFlags &&
