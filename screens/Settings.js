@@ -101,7 +101,15 @@ export default class Settings extends React.Component {
               </View>
             </View>
           </View>
-          <TouchableHighlight onPress={this.handleSignOut}>
+          <TouchableHighlight
+            onPress={this.handleSignOut}
+            style={{
+              borderRadius: 500,
+              width: 150,
+              height: 60,
+              marginTop: 20
+            }}
+          >
             <View
               style={{
                 backgroundColor: '#3cc1c7',
@@ -110,7 +118,11 @@ export default class Settings extends React.Component {
                 paddingRight: 35,
                 paddingTop: 15,
                 paddingBottom: 15,
-                marginTop: 20
+                width: 150,
+                height: 60,
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center'
               }}
             >
               <Text style={{ color: 'white', fontSize: 20 }}>Sign Out</Text>
