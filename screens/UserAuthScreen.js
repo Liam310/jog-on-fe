@@ -29,6 +29,9 @@ export default class UserAuthScreen extends React.Component {
   handleSignIn = () => {
     const { email, password } = this.state;
     Auth.signIn(email, password)
+      .then(() => {
+        this.setState({ password: '' });
+      })
       // If we are successful, navigate to Home screen
       .then(user => this.props.navigation.navigate('TabNavigator'))
       // On failure, display error in console
@@ -56,7 +59,11 @@ export default class UserAuthScreen extends React.Component {
     const { email, confirmationCode } = this.state;
     Auth.confirmSignUp(email, confirmationCode, {})
       .then(() => {
-        this.setState({ modalVisible: false });
+        this.setState({
+          modalVisible: false,
+          password: '',
+          confirmPassword: ''
+        });
         this.props.navigation.navigate('TabNavigator');
       })
       .catch(err => console.log(err));
@@ -121,6 +128,7 @@ export default class UserAuthScreen extends React.Component {
                 onChangeText={value => this.setState({ password: value })}
                 placeholder="p@ssw0rd123"
                 secureTextEntry
+                value={this.state.password}
               ></TextInput>
             </View>
             <View style={{ width: '90%' }}>
@@ -142,6 +150,7 @@ export default class UserAuthScreen extends React.Component {
                 }
                 placeholder="p@ssw0rd123"
                 secureTextEntry
+                value={this.state.confirmPassword}
               ></TextInput>
             </View>
             <View style={{ alignItems: 'center' }}>
@@ -270,6 +279,7 @@ export default class UserAuthScreen extends React.Component {
                 onChangeText={value => this.setState({ password: value })}
                 placeholder="p@ssw0rd123"
                 secureTextEntry
+                value={this.state.password}
               ></TextInput>
             </View>
 
