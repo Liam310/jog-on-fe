@@ -71,6 +71,8 @@ export default class RouteList extends React.Component {
     api.getRoutes({ ...currentLocation, p: this.state.p }).then(routes => {
       // console.log(routes);
       this.setState(currentState => {
+        let p = currentState.p
+        if (routes.length===0) p--
         newRoutes = [];
         routes.forEach(route => {
           if (!currentState.routes.map(route=>route.route_id).includes(route.route_id)) {
@@ -79,7 +81,8 @@ export default class RouteList extends React.Component {
         });
         return {
           routes: [...currentState.routes, ...newRoutes],
-          loading: false
+          loading: false,
+          p
         };
       });
     });
