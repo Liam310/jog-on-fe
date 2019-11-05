@@ -134,7 +134,6 @@ export default class FirstQuestionScreen extends React.Component {
             </TouchableHighlight>
             <View
               style={{
-                // flex: 1,
                 borderRadius: 5,
                 backgroundColor: '#848484',
                 marginLeft: 15,
