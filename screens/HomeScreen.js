@@ -246,6 +246,8 @@ export default class HomeScreen extends React.Component {
               actualRoute,
               existingFlags
             });
+          } else {
+            this.setState({ actualRoute: [] });
           }
         }
       }
