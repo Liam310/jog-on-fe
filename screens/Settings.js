@@ -1,7 +1,14 @@
 import React from 'react';
-import { Text, View, Switch, TouchableOpacity } from 'react-native';
+import {
+  Text,
+  View,
+  Switch,
+  TouchableOpacity,
+  TouchableHighlight
+} from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import Constants from 'expo-constants';
+import { Auth } from 'aws-amplify';
 
 export default class Settings extends React.Component {
   state = {
@@ -94,6 +101,21 @@ export default class Settings extends React.Component {
               </View>
             </View>
           </View>
+          <TouchableHighlight onPress={this.handleSignOut}>
+            <View
+              style={{
+                backgroundColor: '#3cc1c7',
+                borderRadius: 500,
+                paddingLeft: 35,
+                paddingRight: 35,
+                paddingTop: 15,
+                paddingBottom: 15,
+                marginTop: 20
+              }}
+            >
+              <Text style={{ color: 'white', fontSize: 20 }}>Sign Out</Text>
+            </View>
+          </TouchableHighlight>
         </View>
       </>
     );
@@ -120,5 +142,11 @@ export default class Settings extends React.Component {
     this.setState(currentState => {
       return { darkMode: !currentState.darkMode };
     });
+  };
+
+  handleSignOut = () => {
+    Auth.signOut()
+      .then(() => this.props.navigation.navigate('UserAuth'))
+      .catch(err => console.log(err));
   };
 }
