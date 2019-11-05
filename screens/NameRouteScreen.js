@@ -85,13 +85,15 @@ export default class NameRouteScreen extends React.Component {
               Please enter a name for your route :)
             </Text>
           </View> */}
-          <View
-          // style={{}}
-          >
+          <View style={{ alignItems: 'center' }}>
             <TextInput
               style={{
+                paddingLeft: 10,
+                borderStyle: 'solid',
+                borderColor: '#3cc1c7',
+                borderWidth: 2,
                 height: 40,
-                width: 300,
+                width: '110%',
                 backgroundColor: 'white',
                 color: 'black'
               }}
@@ -108,7 +110,8 @@ export default class NameRouteScreen extends React.Component {
                   backgroundColor: 'red',
                   paddingBottom: 2,
                   paddingTop: 2,
-                  borderRadius: 3
+                  borderRadius: 3,
+                  marginTop: 3
                 }}
               >
                 <Text
@@ -150,11 +153,12 @@ export default class NameRouteScreen extends React.Component {
               <View
                 style={{
                   backgroundColor: '#848484',
-                  borderRadius: 50000,
+                  borderRadius: 500,
                   paddingLeft: 35,
                   paddingRight: 35,
-                  paddingTop: 15,
-                  paddingBottom: 15
+                  paddingTop: 12,
+                  paddingBottom: 12,
+                  marginBottom: 7
                 }}
               >
                 <Text style={{ color: 'white', fontSize: 20 }}>DONE</Text>
@@ -173,7 +177,9 @@ export default class NameRouteScreen extends React.Component {
                 paddingBottom: 10
               }}
             >
-              <Text style={{ color: 'white', fontSize: 16 }}>
+              <Text
+                style={{ color: 'white', fontSize: 16, textAlign: 'center' }}
+              >
                 Press done to submit your route
               </Text>
             </View>
