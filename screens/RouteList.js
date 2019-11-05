@@ -9,13 +9,20 @@ import * as Location from 'expo-location';
 
 export default class RouteList extends React.Component {
   state = {
-    routes: []
+    routes: [],
+    p: 1,
+    loading: true
   };
 
   render() {
     const { navigation } = this.props;
     const { routes } = this.state;
     const distanceUnit = navigation.getParam('unit', 'km');
+    isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
+      return (
+        layoutMeasurement.height + contentOffset.y >= contentSize.height - 20
+      );
+    };
     return (
       <>
         <View
@@ -31,7 +38,12 @@ export default class RouteList extends React.Component {
             Routes
           </Text>
         </View>
-        <ScrollView
+        <ScrollView scrollEventThrottle="8"
+          onScroll={({ nativeEvent }) => {
+            if (isCloseToBottom(nativeEvent) && this.state.loading === false) {
+              this.handleBottom();
+            }
+          }}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             paddingTop: 10,
@@ -56,8 +68,24 @@ export default class RouteList extends React.Component {
   }
 
   fetchRoutes = currentLocation => {
-    api.getRoutes(currentLocation).then(routes => {
-      this.setState({ routes });
+    api.getRoutes({ ...currentLocation, p: this.state.p }).then(routes => {
+      // console.log(routes);
+      this.setState(currentState => {
+        let p = currentState.p
+        if (routes.length===0) p--
+        newRoutes = [];
+        routes.forEach(route => {
+          if (!currentState.routes.map(route=>route.route_id).includes(route.route_id)) {
+            newRoutes.push(route);
+          }
+        });
+        return {
+          routes: [...currentState.routes, ...newRoutes],
+          loading: false,
+          p
+        };
+      });
+
     });
   };
 
@@ -74,5 +102,15 @@ export default class RouteList extends React.Component {
       user_lat: initialLocation.coords.latitude,
       user_long: initialLocation.coords.longitude
     });
+  };
+  handleBottom = () => {
+    this.setState(
+      currentState => {
+        return { p: currentState.p + 1, loading: true };
+      },
+      () => {
+        this.fetchRoutes(this.getCurrentLocation);
+      }
+    );
   };
 }
