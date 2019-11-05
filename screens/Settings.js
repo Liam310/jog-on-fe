@@ -1,9 +1,13 @@
 import React from 'react';
-import { Text, View, Button } from 'react-native';
+import { Text, View, Switch, TouchableOpacity } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import Constants from 'expo-constants';
 
 export default class Settings extends React.Component {
+  state = {
+    distanceUnit: 'km',
+    darkMode: false
+  };
   render() {
     return (
       <>
@@ -20,33 +24,101 @@ export default class Settings extends React.Component {
             Settings
           </Text>
         </View>
-        <View
-          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-        >
-          <Button
-            title="Miles"
-            onPress={() => {
-              this.props.navigation.dispatch(
-                NavigationActions.setParams({
-                  params: { unit: 'miles' },
-                  key: 'RouteList'
-                })
-              );
-            }}
-          />
-          <Button
-            title="Kilometres"
-            onPress={() => {
-              this.props.navigation.dispatch(
-                NavigationActions.setParams({
-                  params: { unit: 'km' },
-                  key: 'RouteList'
-                })
-              );
-            }}
-          />
+        <View style={{ alignItems: 'center' }}>
+          <View style={{ marginTop: 10, width: '93%' }}>
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderStyle: 'solid',
+                borderTopWidth: 1,
+                borderTopColor: '#848484',
+                borderBottomWidth: 1,
+                borderBottomColor: '#848484'
+              }}
+            >
+              <TouchableOpacity
+                onPress={this.handleDistanceUnitChange}
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  paddingTop: 15,
+                  paddingBottom: 15,
+                  width: '90%'
+                }}
+              >
+                <>
+                  <Text style={{ fontSize: 18 }}>Distance (units)</Text>
+                  <Text style={{ fontSize: 18 }}>
+                    {this.state.distanceUnit === 'km' ? 'Kilometers' : 'Miles'}
+                  </Text>
+                </>
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderStyle: 'solid',
+                borderBottomWidth: 1,
+                borderBottomColor: '#848484'
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  paddingTop: 10,
+                  paddingBottom: 10,
+                  width: '90%'
+                }}
+              >
+                <Text style={{ fontSize: 18 }}>Dark mode</Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    fontSize: 18
+                  }}
+                >
+                  <Text style={{ fontSize: 18 }}>Off</Text>
+                  <Switch
+                    style={{ marginLeft: 15, marginRight: 15 }}
+                    onValueChange={this.handleDarkModeSwitch}
+                    value={this.state.darkMode}
+                  />
+                  <Text style={{ fontSize: 18 }}>On</Text>
+                </View>
+              </View>
+            </View>
+          </View>
         </View>
       </>
     );
   }
+
+  componentDidUpdate() {
+    this.props.navigation.dispatch(
+      NavigationActions.setParams({
+        params: { unit: this.state.distanceUnit === 'km' ? 'km' : 'miles' },
+        key: 'RouteList'
+      })
+    );
+  }
+
+  handleDistanceUnitChange = () => {
+    this.setState(currentState => {
+      return {
+        distanceUnit: currentState.distanceUnit === 'km' ? 'miles' : 'km'
+      };
+    });
+  };
+
+  handleDarkModeSwitch = () => {
+    this.setState(currentState => {
+      return { darkMode: !currentState.darkMode };
+    });
+  };
 }
