@@ -52,8 +52,6 @@ export default class HomeScreen extends React.Component {
       <View
         style={{
           flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
           paddingTop: Constants.statusBarHeight,
           backgroundColor: '#ffffff'
         }}
@@ -87,10 +85,6 @@ export default class HomeScreen extends React.Component {
               }}
             />
             <MapView
-              // onMapReady={() => {
-              //   console.log('Map is ready!');
-              //   this.setState({ isLoading: false });
-              // }}
               followsUserLocation={gettingLocation}
               rotateEnabled={false}
               showsUserLocation={true}
@@ -178,7 +172,6 @@ export default class HomeScreen extends React.Component {
         };
       },
       () => {
-        this.setState({ isLoading: false });
         this.fetchFlags(this.state.flagFetchRegion);
       }
     );
@@ -253,11 +246,11 @@ export default class HomeScreen extends React.Component {
       .then(({ flags }) => {
         this.setState({ existingFlags: flags });
       })
-      // .then(() => {
-      //   if (this.state.isLoading) {
-      //     this.setState({ isLoading: false });
-      //   }
-      // })
+      .then(() => {
+        if (this.state.isLoading) {
+          this.setState({ isLoading: false });
+        }
+      })
       .catch(console.log);
   };
 
