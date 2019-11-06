@@ -1,6 +1,5 @@
 import React from 'react';
 import { TouchableHighlight, View } from 'react-native';
-import Constants from 'expo-constants';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function ToggleFlags({ handleToggle, showFlags }) {
@@ -9,7 +8,7 @@ export default function ToggleFlags({ handleToggle, showFlags }) {
       onPress={handleToggle}
       style={{
         position: 'absolute',
-        top: 15 + Constants.statusBarHeight,
+        top: 15,
         right: 15,
         borderRadius: 500
       }}
