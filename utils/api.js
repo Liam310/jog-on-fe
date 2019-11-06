@@ -10,7 +10,10 @@ const request = axios.create({
 // FLAGS
 export const postFlags = flags => {
   return Auth.currentAuthenticatedUser()
-    .then(({ signInUserSession: { accessToken: { jwtToken } } }) => {
+    .then(({ signInUserSession: { accessToken: { jwtToken } }, username }) => {
+      flags.flags.forEach(flag => {
+        flag.user_id = username;
+      });
       return request.post('/flags', flags, {
         headers: { usertoken: jwtToken }
       });
