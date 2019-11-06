@@ -14,7 +14,8 @@ export default class RouteList extends React.Component {
     routes: [],
     p: 1,
     loading: true,
-    selectedIndex: 0
+    selectedIndex: 0,
+    isGettingUserRoutes: false
   };
 
   buttons = ['All Routes', 'My Routes'];
@@ -23,8 +24,8 @@ export default class RouteList extends React.Component {
     const newIndex = this.state.selectedIndex === 0 ? 1 : 0;
     this.setState({ selectedIndex: newIndex }, () => {
       this.state.selectedIndex === 0
-        ? this.getCurrentLocation()
-        : this.getCurrentLocationMyRoutes();
+        ? this.getCurrentLocation(false)
+        : this.getCurrentLocation(true);
     });
   };
 
@@ -77,7 +78,11 @@ export default class RouteList extends React.Component {
                 alignItems: 'center'
               }}
             >
-              <NavigationEvents onDidFocus={this.getCurrentLocation} />
+              <NavigationEvents
+                onDidFocus={() => {
+                  this.getCurrentLocation(false);
+                }}
+              />
               {routes.map(route => {
                 return (
                   <RouteCard
@@ -107,7 +112,11 @@ export default class RouteList extends React.Component {
                 alignItems: 'center'
               }}
             >
-              <NavigationEvents onDidFocus={this.getCurrentLocationMyRoutes} />
+              <NavigationEvents
+                onDidFocus={() => {
+                  this.getCurrentLocation(true);
+                }}
+              />
               {routes.map(route => {
                 return (
                   <RouteCard
@@ -125,29 +134,39 @@ export default class RouteList extends React.Component {
     );
   }
 
-  fetchRoutes = currentLocation => {
-    api.getRoutes({ ...currentLocation, p: this.state.p }).then(routes => {
-      // console.log(routes);
-      this.setState(currentState => {
-        let p = currentState.p;
-        if (routes.length === 0) p--;
-        newRoutes = [];
-        routes.forEach(route => {
-          if (
-            !currentState.routes
-              .map(route => route.route_id)
-              .includes(route.route_id)
-          ) {
-            newRoutes.push(route);
+  fetchRoutes = (currentLocation, bool) => {
+    api
+      .getRoutes({ ...currentLocation, p: this.state.p }, bool)
+      .then(routes => {
+        this.setState(currentState => {
+          let p = currentState.p;
+          if (routes.length === 0 && p > 1) p--;
+          newRoutes = [];
+          routes.forEach(route => {
+            if (
+              !currentState.routes
+                .map(route => route.route_id)
+                .includes(route.route_id)
+            ) {
+              newRoutes.push(route);
+            }
+          });
+          if (currentState.isGettingUserRoutes !== bool) {
+            return {
+              routes: [...currentState.routes, ...newRoutes],
+              loading: false,
+              p
+            };
+          } else {
+            return {
+              routes: newRoutes,
+              loading: false,
+              p: 1,
+              isGettingUserRoutes: !currentState.isGettingUserRoutes
+            };
           }
         });
-        return {
-          routes: [...currentState.routes, ...newRoutes],
-          loading: false,
-          p
-        };
       });
-    });
   };
 
   handleRouteSelect = poly => {
@@ -157,24 +176,15 @@ export default class RouteList extends React.Component {
     this.props.navigation.navigate('Home', { decodedPoly });
   };
 
-  getCurrentLocation = async () => {
-    console.log('getting all routes');
+  getCurrentLocation = async bool => {
     const initialLocation = await Location.getCurrentPositionAsync({});
-    this.fetchRoutes({
-      user_lat: initialLocation.coords.latitude,
-      user_long: initialLocation.coords.longitude
-    });
-  };
-
-  getCurrentLocationMyRoutes = async () => {
-    console.log('getting my routes');
-    const initialLocation = await Location.getCurrentPositionAsync({});
-    const { username } = await Auth.currentAuthenticatedUser();
-    this.fetchRoutes({
-      user_id: username,
-      user_lat: initialLocation.coords.latitude,
-      user_long: initialLocation.coords.longitude
-    });
+    this.fetchRoutes(
+      {
+        user_lat: initialLocation.coords.latitude,
+        user_long: initialLocation.coords.longitude
+      },
+      bool
+    );
   };
 
   handleBottom = () => {
