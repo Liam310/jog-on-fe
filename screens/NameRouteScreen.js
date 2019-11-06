@@ -208,7 +208,6 @@ export default class NameRouteScreen extends React.Component {
     const newRoute = {
       name: this.state.actualRouteName,
       poly: polyfied,
-      user_id: 1,
       length_in_km: routeLength
     };
 

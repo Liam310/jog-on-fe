@@ -1,11 +1,11 @@
-import React from "react";
-import { View, Dimensions, Platform, Modal } from "react-native";
-import MapView, { Polyline, Marker } from "react-native-maps";
-import Constants from "expo-constants";
-import * as Location from "expo-location";
-import * as Permissions from "expo-permissions";
-import * as api from "../utils/api";
-import flagRef from "../utils/flagRefObj";
+import React from 'react';
+import { View, Dimensions, Platform, ActivityIndicator, Modal } from 'react-native';
+import MapView, { Polyline, Marker } from 'react-native-maps';
+import Constants from 'expo-constants';
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
+import * as api from '../utils/api';
+import flagRef from '../utils/flagRefObj';
 import {
   checkSufficientRegionChange,
   convertRouteToRegion
@@ -36,7 +36,8 @@ export default class HomeScreen extends React.Component {
     },
     existingFlags: [],
     showFlags: true,
-    keyModal: false
+    keyModal: false,
+    isLoading: true
   };
 
   render() {
@@ -47,7 +48,8 @@ export default class HomeScreen extends React.Component {
       showFlags,
       existingFlags,
       gettingLocation,
-      keyModal
+      keyModal,
+      isLoading
     } = this.state;
     const chosenRoute = navigation.getParam("decodedPoly", []);
     return (
@@ -60,56 +62,82 @@ export default class HomeScreen extends React.Component {
           backgroundColor: "#ffffff"
         }}
       >
-        <NavigationEvents
-          onDidFocus={() => {
-            this.updateChosenRoute(chosenRoute);
-            this.setState({
-              actualRoute: []
-            });
-          }}
-        />
-        <MapView
-          followsUserLocation={gettingLocation}
-          rotateEnabled={false}
-          showsUserLocation={true}
-          style={{
-            width: Dimensions.get("window").width,
-            flex: 1
-          }}
-          region={mapRegion}
-          onRegionChangeComplete={this.handleRegionChange}
-        >
-          <Polyline
-            coordinates={actualRoute}
-            strokeColor="#000000"
-            strokeWidth={6}
-          />
+      
+        {isLoading ? (
+          <View
+            style={{
+              height: '100%',
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <ActivityIndicator size={100} color="#3cc1c7" />
+          </View>
+        ) : (
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: '#ffffff'
+            }}
+          >
+            <NavigationEvents
+              onDidFocus={() => {
+                this.updateChosenRoute(chosenRoute);
+                this.setState({
+                  actualRoute: []
+                });
+              }}
+            />
+            <MapView
+              followsUserLocation={gettingLocation}
+              rotateEnabled={false}
+              showsUserLocation={true}
+              style={{
+                width: Dimensions.get('window').width,
+                flex: 1
+              }}
+              region={mapRegion}
+              onRegionChangeComplete={this.handleRegionChange}
+            >
+              <Polyline
+                coordinates={actualRoute}
+                strokeColor="#000000"
+                strokeWidth={6}
+              />
 
-          <Polyline
-            coordinates={chosenRoute}
-            strokeColor="#0066FF"
-            strokeWidth={6}
-          />
-          {showFlags &&
-            existingFlags.map(
-              ({ latitude, longitude, flag_type_id }, index) => {
-                return (
-                  <Marker
-                    coordinate={{ latitude, longitude }}
-                    key={index}
-                    image={flagRef[flag_type_id]}
-                  />
-                );
-              }
-            )}
-        </MapView>
-        <ToggleFlags handleToggle={this.handleToggle} showFlags={showFlags} />
-        <StartStop
-          handlePress={this.handlePress}
-          gettingLocation={gettingLocation}
-        />
-        <KeyToggle handleToggle={this.handleModalView} />
+              <Polyline
+                coordinates={chosenRoute}
+                strokeColor="#0066FF"
+                strokeWidth={6}
+              />
+              {showFlags &&
+                existingFlags.map(
+                  ({ latitude, longitude, flag_type_id }, index) => {
+                    return (
+                      <Marker
+                        coordinate={{ latitude, longitude }}
+                        key={index}
+                        image={flagRef[flag_type_id]}
+                      />
+                    );
+                  }
+                )}
+            </MapView>
+            <ToggleFlags
+              handleToggle={this.handleToggle}
+              showFlags={showFlags}
+            />
+            <StartStop
+              handlePress={this.handlePress}
+              gettingLocation={gettingLocation}
+            />
+          </View>
+  <KeyToggle handleToggle={this.handleModalView} />
         <KeyBox handleToggle={this.handleModalView} keyModal={keyModal} />
+        )}
       </View>
     );
   }
@@ -158,7 +186,8 @@ export default class HomeScreen extends React.Component {
     );
   };
 
-  handleModalView = () => {
+  handle
+  View = () => {
     this.setState(currentState => {
       return { keyModal: !currentState.keyModal };
     });
@@ -232,6 +261,11 @@ export default class HomeScreen extends React.Component {
       .getFlags(regionObj)
       .then(({ flags }) => {
         this.setState({ existingFlags: flags });
+      })
+      .then(() => {
+        if (this.state.isLoading) {
+          this.setState({ isLoading: false });
+        }
       })
       .catch(console.log);
   };
