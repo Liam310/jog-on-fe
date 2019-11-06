@@ -44,11 +44,13 @@ export const getFlags = regionQueryObj => {
 
 // ROUTES
 
-export const getRoutes = ({ user_lat, user_long, p }) => {
+export const getRoutes = ({ user_lat, user_long, p }, bool) => {
   return Auth.currentAuthenticatedUser()
-    .then(({ signInUserSession: { accessToken: { jwtToken } } }) => {
+    .then(({ signInUserSession: { accessToken: { jwtToken } }, username }) => {
+      const user_id = bool ? username : undefined;
+      console.log(user_id);
       return request.get('/routes', {
-        params: { user_lat, user_long, p },
+        params: { user_lat, user_long, p, user_id },
         headers: { usertoken: jwtToken }
       });
     })
