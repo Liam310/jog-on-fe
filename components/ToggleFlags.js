@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableHighlight, View, Text } from 'react-native';
+import { TouchableHighlight, View } from 'react-native';
 import Constants from 'expo-constants';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
