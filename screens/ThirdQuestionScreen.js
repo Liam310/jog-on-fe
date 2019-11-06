@@ -173,7 +173,6 @@ export default class ThirdQuestionScreen extends React.Component {
       this.props.navigation.getParam('actualRoute', [])
     );
     const newFlag = {
-      user_id: 1,
       flag_type_id: 3,
       latitude: nearestCoordinate.latitude,
       longitude: nearestCoordinate.longitude
