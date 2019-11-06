@@ -37,18 +37,16 @@ export const getFlags = regionQueryObj => {
     .catch(err => {
       console.log(err);
     });
-
-  // const { data } = await request.get('/flags', { params: regionQueryObj });
-  // return data;
 };
 
 // ROUTES
 
-export const getRoutes = ({ user_lat, user_long, p }) => {
+export const getRoutes = ({ user_lat, user_long, p }, bool) => {
   return Auth.currentAuthenticatedUser()
-    .then(({ signInUserSession: { accessToken: { jwtToken } } }) => {
+    .then(({ signInUserSession: { accessToken: { jwtToken } }, username }) => {
+      const user_id = bool ? username : undefined;
       return request.get('/routes', {
-        params: { user_lat, user_long, p },
+        params: { user_lat, user_long, p, user_id },
         headers: { usertoken: jwtToken }
       });
     })
@@ -73,7 +71,15 @@ export const postRoute = route => {
     .catch(err => {
       console.log(err);
     });
-  // return request.post('/routes', route).catch(error => {
-  //   console.log(error);
-  // });
+};
+
+export const postUser = () => {
+  return Auth.currentAuthenticatedUser()
+    .then(({ signInUserSession: { accessToken: { jwtToken } }, username }) => {
+      const user = { user_id: username };
+      return request.post('/users', user, {
+        headers: { usertoken: jwtToken }
+      });
+    })
+    .catch(err => console.log(err));
 };

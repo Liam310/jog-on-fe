@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableHighlight, View, Text } from 'react-native';
+import { TouchableHighlight, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function ToggleFlags({ handleToggle, showFlags }) {
