@@ -7,6 +7,7 @@ import flagRef from '../utils/flagRefObj';
 import { convertRouteToRegion } from '../utils/utils';
 import { findNearest } from 'geolib';
 import { MaterialIcons } from '@expo/vector-icons';
+import UndoButton from '../components/UndoButton';
 
 export default class SecondQuestionScreen extends React.Component {
   state = {
@@ -77,19 +78,27 @@ export default class SecondQuestionScreen extends React.Component {
         >
           <View
             style={{
-              borderRadius: 5,
-              backgroundColor: '#3cc1c7',
-              marginLeft: 15,
-              marginRight: 15,
-              paddingLeft: 15,
-              paddingRight: 15,
-              paddingTop: 10,
-              paddingBottom: 10
+              alignItems: 'flex-end'
             }}
           >
-            <Text style={{ color: 'white', fontSize: 18 }}>
-              Please mark any areas with inadequate lighting on the route below
-            </Text>
+            <View
+              style={{
+                borderRadius: 5,
+                backgroundColor: '#3cc1c7',
+                marginLeft: 15,
+                marginRight: 15,
+                paddingLeft: 15,
+                paddingRight: 15,
+                paddingTop: 10,
+                paddingBottom: 10
+              }}
+            >
+              <Text style={{ color: 'white', fontSize: 18 }}>
+                Please mark any areas with inadequate lighting on the route
+                below
+              </Text>
+            </View>
+            <UndoButton handleUndoPress={this.handleUndoPress} />
           </View>
           <View
             style={{
@@ -144,8 +153,8 @@ export default class SecondQuestionScreen extends React.Component {
               }}
             >
               <Text style={{ color: 'white', fontSize: 16 }}>
-                Press and hold on the route to place a marker, then press next to
-                move onto the next question
+                Press and hold on the route to place a marker, then press next
+                to move onto the next question
               </Text>
             </View>
           </View>
@@ -176,6 +185,12 @@ export default class SecondQuestionScreen extends React.Component {
       return {
         flags: [...currentState.flags, newFlag]
       };
+    });
+  };
+  handleUndoPress = () => {
+    this.setState(currentState => {
+      const latestRemoved = currentState.flags.slice(0, -1);
+      return { flags: latestRemoved };
     });
   };
 }

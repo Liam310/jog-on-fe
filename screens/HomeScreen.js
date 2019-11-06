@@ -216,9 +216,12 @@ export default class HomeScreen extends React.Component {
   };
 
   fetchFlags = regionObj => {
-    api.getFlags(regionObj).then(({ flags }) => {
-      this.setState({ existingFlags: flags });
-    });
+    api
+      .getFlags(regionObj)
+      .then(({ flags }) => {
+        this.setState({ existingFlags: flags });
+      })
+      .catch(console.log);
   };
 
   updateChosenRoute = chosenRoute => {
