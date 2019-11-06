@@ -72,7 +72,6 @@ export default class UserAuthScreen extends React.Component {
                 this.setState({ password: '' });
               })
               .then(() => {
-                console.log('posting user!');
                 return api.postUser();
               });
           }
