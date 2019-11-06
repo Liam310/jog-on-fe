@@ -44,10 +44,10 @@ export const getFlags = regionQueryObj => {
 
 // ROUTES
 
-export const getRoutes = ({ user_lat, user_long, p }, bool) => {
+export const getRoutes = ({ user_lat, user_long, p }, isGettingUserRoutes) => {
   return Auth.currentAuthenticatedUser()
     .then(({ signInUserSession: { accessToken: { jwtToken } }, username }) => {
-      const user_id = bool ? username : undefined;
+      const user_id = isGettingUserRoutes ? username : undefined;
       return request.get('/routes', {
         params: { user_lat, user_long, p, user_id },
         headers: { usertoken: jwtToken }

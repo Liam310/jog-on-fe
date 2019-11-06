@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  ScrollView,
-  View,
-  Text,
-  ActivityIndicator,
-  Dimensions
-} from 'react-native';
+import { ScrollView, View, ActivityIndicator } from 'react-native';
 import * as api from '../utils/api';
 import { NavigationEvents } from 'react-navigation';
 import RouteCard from '../components/RouteCard';
@@ -13,12 +7,11 @@ import Constants from 'expo-constants';
 import * as polyline from '@mapbox/polyline';
 import * as Location from 'expo-location';
 import { ButtonGroup } from 'react-native-elements';
-import Amplify, { Auth } from 'aws-amplify';
 
 export default class RouteList extends React.Component {
   state = {
     routes: [],
-    p: 1,
+    page: 1,
     loading: true,
     selectedIndex: 0,
     isGettingUserRoutes: false
@@ -26,11 +19,10 @@ export default class RouteList extends React.Component {
 
   buttons = ['All Routes', 'My Routes'];
   updateIndex = () => {
-    // If selectedIndex was 0, make it 1.  If it was 1, make it 0
     const newIndex = this.state.selectedIndex === 0 ? 1 : 0;
     this.setState(
       currentState => {
-        return { selectedIndex: newIndex, loading: !currentState.loading };
+        return { selectedIndex: newIndex, loading: true };
       },
       () => {
         this.state.selectedIndex === 0
@@ -58,12 +50,6 @@ export default class RouteList extends React.Component {
             backgroundColor: '#ffffff'
           }}
         >
-          {/* <Text
-            style={{ fontSize: 18, textAlign: 'center', fontWeight: 'bold' }}
-          >
-            Routes
-          </Text> */}
-
           <ButtonGroup
             onPress={this.updateIndex}
             selectedIndex={this.state.selectedIndex}
@@ -162,11 +148,11 @@ export default class RouteList extends React.Component {
 
   fetchRoutes = (currentLocation, bool) => {
     api
-      .getRoutes({ ...currentLocation, p: this.state.p }, bool)
+      .getRoutes({ ...currentLocation, page: this.state.page }, bool)
       .then(routes => {
         this.setState(currentState => {
-          let p = currentState.p;
-          if (routes.length === 0 && p > 1) p--;
+          let page = currentState.page;
+          if (routes.length === 0 && page > 1) page--;
           newRoutes = [];
           routes.forEach(route => {
             if (
@@ -177,18 +163,17 @@ export default class RouteList extends React.Component {
               newRoutes.push(route);
             }
           });
-          if (currentState.isGettingUserRoutes !== bool) {
+          if (!bool) {
             return {
               routes: [...currentState.routes, ...newRoutes],
               loading: false,
-              p
+              page
             };
           } else {
             return {
-              routes: newRoutes,
+              routes,
               loading: false,
-              p: 1,
-              isGettingUserRoutes: !currentState.isGettingUserRoutes
+              page: 1
             };
           }
         });
@@ -204,22 +189,24 @@ export default class RouteList extends React.Component {
 
   getCurrentLocation = async bool => {
     const initialLocation = await Location.getCurrentPositionAsync({});
-    this.fetchRoutes(
-      {
-        user_lat: initialLocation.coords.latitude,
-        user_long: initialLocation.coords.longitude
-      },
-      bool
-    );
+    this.setState({ isGettingUserRoutes: bool }, () => {
+      this.fetchRoutes(
+        {
+          user_lat: initialLocation.coords.latitude,
+          user_long: initialLocation.coords.longitude
+        },
+        bool
+      );
+    });
   };
 
   handleBottom = () => {
     this.setState(
       currentState => {
-        return { p: currentState.p + 1, loading: true };
+        return { page: currentState.page + 1, loading: true };
       },
       () => {
-        this.fetchRoutes(this.getCurrentLocation);
+        this.getCurrentLocation(this.state.isGettingUserRoutes);
       }
     );
   };
