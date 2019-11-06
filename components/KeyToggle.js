@@ -1,6 +1,5 @@
 import React from 'react';
 import { TouchableHighlight, View } from 'react-native';
-import Constants from 'expo-constants';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function KeyToggle({ handleToggle }) {
@@ -29,7 +28,7 @@ export default function KeyToggle({ handleToggle }) {
           alignItems: 'center'
         }}
       >
-        <MaterialCommunityIcons name="key" size={36} color="white" />
+        <MaterialCommunityIcons name='key' size={36} color='white' />
       </View>
     </TouchableHighlight>
   );
