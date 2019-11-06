@@ -1,11 +1,16 @@
-import React from 'react';
-import { View, Dimensions, Platform, ActivityIndicator, Modal } from 'react-native';
-import MapView, { Polyline, Marker } from 'react-native-maps';
-import Constants from 'expo-constants';
-import * as Location from 'expo-location';
-import * as Permissions from 'expo-permissions';
-import * as api from '../utils/api';
-import flagRef from '../utils/flagRefObj';
+import React from "react";
+import {
+  View,
+  Dimensions,
+  Platform,
+  ActivityIndicator
+} from "react-native";
+import MapView, { Polyline, Marker } from "react-native-maps";
+import Constants from "expo-constants";
+import * as Location from "expo-location";
+import * as Permissions from "expo-permissions";
+import * as api from "../utils/api";
+import flagRef from "../utils/flagRefObj";
 import {
   checkSufficientRegionChange,
   convertRouteToRegion
@@ -62,25 +67,24 @@ export default class HomeScreen extends React.Component {
           backgroundColor: "#ffffff"
         }}
       >
-      
         {isLoading ? (
           <View
             style={{
-              height: '100%',
-              width: '100%',
-              justifyContent: 'center',
-              alignItems: 'center'
+              height: "100%",
+              width: "100%",
+              justifyContent: "center",
+              alignItems: "center"
             }}
           >
-            <ActivityIndicator size={100} color="#3cc1c7" />
+            <ActivityIndicator size={"large"} color="#3cc1c7" />
           </View>
         ) : (
           <View
             style={{
               flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: '#ffffff'
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "#ffffff"
             }}
           >
             <NavigationEvents
@@ -96,7 +100,7 @@ export default class HomeScreen extends React.Component {
               rotateEnabled={false}
               showsUserLocation={true}
               style={{
-                width: Dimensions.get('window').width,
+                width: Dimensions.get("window").width,
                 flex: 1
               }}
               region={mapRegion}
@@ -134,9 +138,9 @@ export default class HomeScreen extends React.Component {
               handlePress={this.handlePress}
               gettingLocation={gettingLocation}
             />
+            <KeyToggle handleToggle={this.handleModalView} />
+            <KeyBox handleToggle={this.handleModalView} keyModal={keyModal} />
           </View>
-  <KeyToggle handleToggle={this.handleModalView} />
-        <KeyBox handleToggle={this.handleModalView} keyModal={keyModal} />
         )}
       </View>
     );
@@ -186,8 +190,7 @@ export default class HomeScreen extends React.Component {
     );
   };
 
-  handle
-  View = () => {
+  handleModalView = () => {
     this.setState(currentState => {
       return { keyModal: !currentState.keyModal };
     });

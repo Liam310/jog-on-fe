@@ -330,7 +330,6 @@ export default class UserAuthScreen extends React.Component {
     );
   }
   componentDidMount() {
-    this.props.navigation.navigate('TabNavigator');
     Auth.currentAuthenticatedUser()
       .then(() => {
         this.props.navigation.navigate('TabNavigator');
