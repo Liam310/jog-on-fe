@@ -60,22 +60,22 @@ export default class UserAuthScreen extends React.Component {
     const { email, password, confirmationCode } = this.state;
     Auth.confirmSignUp(email, confirmationCode, {})
       .then(() => {
-        this.setState(
-          {
-            modalVisible: false,
-            password: '',
-            confirmPassword: ''
-          },
-          () => {
-            Auth.signIn(email, password)
-              .then(() => {
-                this.setState({ password: '' });
-              })
-              .then(() => {
-                return api.postUser();
-              });
-          }
-        );
+        this.setState({
+          modalVisible: false,
+          password: '',
+          confirmPassword: ''
+        });
+      })
+      .then(() => {
+        return Auth.signIn(email, password);
+      })
+      .then(() => {
+        this.setState({ password: '' });
+      })
+      .then(() => {
+        return api.postUser();
+      })
+      .then(() => {
         this.props.navigation.navigate('TabNavigator');
       })
       .catch(err => console.log(err));
