@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Dimensions, Platform, ActivityIndicator } from 'react-native';
+import { View, Dimensions, Platform, ActivityIndicator, Modal } from 'react-native';
 import MapView, { Polyline, Marker } from 'react-native-maps';
 import Constants from 'expo-constants';
 import * as Location from 'expo-location';
@@ -9,10 +9,12 @@ import flagRef from '../utils/flagRefObj';
 import {
   checkSufficientRegionChange,
   convertRouteToRegion
-} from '../utils/utils';
-import ToggleFlags from '../components/ToggleFlags';
-import { NavigationEvents } from 'react-navigation';
-import StartStop from '../components/StartStop';
+} from "../utils/utils";
+import ToggleFlags from "../components/ToggleFlags";
+import KeyToggle from "../components/KeyToggle";
+import KeyBox from "../components/KeyBox";
+import { NavigationEvents } from "react-navigation";
+import StartStop from "../components/StartStop";
 
 export default class HomeScreen extends React.Component {
   state = {
@@ -34,6 +36,7 @@ export default class HomeScreen extends React.Component {
     },
     existingFlags: [],
     showFlags: true,
+    keyModal: false,
     isLoading: true
   };
 
@@ -45,17 +48,21 @@ export default class HomeScreen extends React.Component {
       showFlags,
       existingFlags,
       gettingLocation,
+      keyModal,
       isLoading
     } = this.state;
-    const chosenRoute = navigation.getParam('decodedPoly', []);
+    const chosenRoute = navigation.getParam("decodedPoly", []);
     return (
       <View
         style={{
           flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
           paddingTop: Constants.statusBarHeight,
-          backgroundColor: '#ffffff'
+          backgroundColor: "#ffffff"
         }}
       >
+      
         {isLoading ? (
           <View
             style={{
@@ -128,16 +135,18 @@ export default class HomeScreen extends React.Component {
               gettingLocation={gettingLocation}
             />
           </View>
+  <KeyToggle handleToggle={this.handleModalView} />
+        <KeyBox handleToggle={this.handleModalView} keyModal={keyModal} />
         )}
       </View>
     );
   }
 
   componentWillMount() {
-    if (Platform.OS === 'android' && !Constants.isDevice) {
+    if (Platform.OS === "android" && !Constants.isDevice) {
       this.setState({
         errorMessage:
-          'Oops, this will not work on Sketch in an Android emulator. Try it on your device!'
+          "Oops, this will not work on Sketch in an Android emulator. Try it on your device!"
       });
     } else {
       this.getLocationAsync();
@@ -146,9 +155,9 @@ export default class HomeScreen extends React.Component {
 
   getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status !== 'granted') {
+    if (status !== "granted") {
       this.setState({
-        errorMessage: 'Permission to access location was denied'
+        errorMessage: "Permission to access location was denied"
       });
     }
 
@@ -175,6 +184,13 @@ export default class HomeScreen extends React.Component {
         this.fetchFlags(this.state.flagFetchRegion);
       }
     );
+  };
+
+  handle
+  View = () => {
+    this.setState(currentState => {
+      return { keyModal: !currentState.keyModal };
+    });
   };
 
   handleRegionChange = mapRegion => {
@@ -228,7 +244,7 @@ export default class HomeScreen extends React.Component {
         } else {
           this.locationUpdateWatcher.remove();
           if (actualRoute.length > 3) {
-            this.props.navigation.navigate('FirstQuestion', {
+            this.props.navigation.navigate("FirstQuestion", {
               actualRoute,
               existingFlags
             });
