@@ -60,7 +60,8 @@ export const getRoutes = ({ user_lat, user_long, p }, bool) => {
 
 export const postRoute = route => {
   return Auth.currentAuthenticatedUser()
-    .then(({ signInUserSession: { accessToken: { jwtToken } } }) => {
+    .then(({ signInUserSession: { accessToken: { jwtToken } }, username }) => {
+      route.user_id = username;
       return request.post('/routes', route, {
         headers: { usertoken: jwtToken }
       });
