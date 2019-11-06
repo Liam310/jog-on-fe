@@ -1,5 +1,11 @@
 import React from 'react';
-import { ScrollView, View, Text } from 'react-native';
+import {
+  ScrollView,
+  View,
+  Text,
+  ActivityIndicator,
+  Dimensions
+} from 'react-native';
 import * as api from '../utils/api';
 import { NavigationEvents } from 'react-navigation';
 import RouteCard from '../components/RouteCard';
@@ -22,11 +28,16 @@ export default class RouteList extends React.Component {
   updateIndex = () => {
     // If selectedIndex was 0, make it 1.  If it was 1, make it 0
     const newIndex = this.state.selectedIndex === 0 ? 1 : 0;
-    this.setState({ selectedIndex: newIndex }, () => {
-      this.state.selectedIndex === 0
-        ? this.getCurrentLocation(false)
-        : this.getCurrentLocation(true);
-    });
+    this.setState(
+      currentState => {
+        return { selectedIndex: newIndex, loading: !currentState.loading };
+      },
+      () => {
+        this.state.selectedIndex === 0
+          ? this.getCurrentLocation(false)
+          : this.getCurrentLocation(true);
+      }
+    );
   };
 
   render() {
@@ -62,7 +73,7 @@ export default class RouteList extends React.Component {
 
           {this.state.selectedIndex === 0 ? (
             <ScrollView
-              scrollEventThrottle="8"
+              scrollEventThrottle='8'
               onScroll={({ nativeEvent }) => {
                 if (
                   isCloseToBottom(nativeEvent) &&
@@ -77,9 +88,14 @@ export default class RouteList extends React.Component {
                 paddingBottom: 60,
                 alignItems: 'center'
               }}
+              style={{
+                marginBottom: 25
+              }}
+              alwaysBounceVertical={true}
             >
               <NavigationEvents
                 onDidFocus={() => {
+                  console.log('all routes');
                   this.getCurrentLocation(false);
                 }}
               />
@@ -93,10 +109,13 @@ export default class RouteList extends React.Component {
                   />
                 );
               })}
+              {this.state.loading && (
+                <ActivityIndicator size={'large'} color='#3cc1c7' />
+              )}
             </ScrollView>
           ) : (
             <ScrollView
-              scrollEventThrottle="8"
+              scrollEventThrottle='8'
               onScroll={({ nativeEvent }) => {
                 if (
                   isCloseToBottom(nativeEvent) &&
@@ -111,9 +130,13 @@ export default class RouteList extends React.Component {
                 paddingBottom: 60,
                 alignItems: 'center'
               }}
+              style={{
+                marginBottom: 25
+              }}
             >
               <NavigationEvents
                 onDidFocus={() => {
+                  console.log('my routes');
                   this.getCurrentLocation(true);
                 }}
               />
@@ -127,6 +150,9 @@ export default class RouteList extends React.Component {
                   />
                 );
               })}
+              {this.state.loading && (
+                <ActivityIndicator size={'large'} color='#3cc1c7' />
+              )}
             </ScrollView>
           )}
         </View>
