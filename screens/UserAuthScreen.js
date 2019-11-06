@@ -10,6 +10,7 @@ import {
 import { Input, ButtonGroup } from 'react-native-elements';
 import Constants from 'expo-constants';
 import Amplify, { Auth } from 'aws-amplify';
+import * as api from '../utils/api';
 
 export default class UserAuthScreen extends React.Component {
   state = {
@@ -56,14 +57,26 @@ export default class UserAuthScreen extends React.Component {
     }
   };
   handleConfirmationCode = () => {
-    const { email, confirmationCode } = this.state;
+    const { email, password, confirmationCode } = this.state;
     Auth.confirmSignUp(email, confirmationCode, {})
       .then(() => {
-        this.setState({
-          modalVisible: false,
-          password: '',
-          confirmPassword: ''
-        });
+        this.setState(
+          {
+            modalVisible: false,
+            password: '',
+            confirmPassword: ''
+          },
+          () => {
+            Auth.signIn(email, password)
+              .then(() => {
+                this.setState({ password: '' });
+              })
+              .then(() => {
+                console.log('posting user!');
+                return api.postUser();
+              });
+          }
+        );
         this.props.navigation.navigate('TabNavigator');
       })
       .catch(err => console.log(err));
