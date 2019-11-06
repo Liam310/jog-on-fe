@@ -37,9 +37,6 @@ export const getFlags = regionQueryObj => {
     .catch(err => {
       console.log(err);
     });
-
-  // const { data } = await request.get('/flags', { params: regionQueryObj });
-  // return data;
 };
 
 // ROUTES
@@ -74,9 +71,6 @@ export const postRoute = route => {
     .catch(err => {
       console.log(err);
     });
-  // return request.post('/routes', route).catch(error => {
-  //   console.log(error);
-  // });
 };
 
 export const postUser = () => {
