@@ -184,6 +184,7 @@ export default class ThirdQuestionScreen extends React.Component {
       };
     });
   };
+
   handleUndoPress = () => {
     this.setState(currentState => {
       const latestRemoved = currentState.flags.slice(0, -1);

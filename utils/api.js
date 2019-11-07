@@ -3,8 +3,6 @@ import { Auth } from 'aws-amplify';
 
 const request = axios.create({
   baseURL: 'https://judsfg9bq1.execute-api.eu-west-2.amazonaws.com/latest/api'
-  // baseURL: 'http://172.26.44.25:3000/api'
-  // baseURL: 'http://172.20.10.4:3000/api'
 });
 
 // FLAGS
@@ -43,13 +41,15 @@ export const getFlags = regionQueryObj => {
 };
 
 // ROUTES
-
-export const getRoutes = ({ user_lat, user_long, p }, isGettingUserRoutes) => {
+export const getRoutes = (
+  { user_lat, user_long, page },
+  isGettingUserRoutes
+) => {
   return Auth.currentAuthenticatedUser()
     .then(({ signInUserSession: { accessToken: { jwtToken } }, username }) => {
       const user_id = isGettingUserRoutes ? username : undefined;
       return request.get('/routes', {
-        params: { user_lat, user_long, p, user_id },
+        params: { user_lat, user_long, page, user_id },
         headers: { usertoken: jwtToken }
       });
     })

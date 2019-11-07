@@ -1,25 +1,20 @@
-import React from "react";
-import {
-  View,
-  Dimensions,
-  Platform,
-  ActivityIndicator
-} from "react-native";
-import MapView, { Polyline, Marker } from "react-native-maps";
-import Constants from "expo-constants";
-import * as Location from "expo-location";
-import * as Permissions from "expo-permissions";
-import * as api from "../utils/api";
-import flagRef from "../utils/flagRefObj";
+import React from 'react';
+import { View, Dimensions, Platform, ActivityIndicator } from 'react-native';
+import MapView, { Polyline, Marker } from 'react-native-maps';
+import Constants from 'expo-constants';
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
+import * as api from '../utils/api';
+import flagRef from '../utils/flagRefObj';
 import {
   checkSufficientRegionChange,
   convertRouteToRegion
-} from "../utils/utils";
-import ToggleFlags from "../components/ToggleFlags";
-import KeyToggle from "../components/KeyToggle";
-import KeyBox from "../components/KeyBox";
-import { NavigationEvents } from "react-navigation";
-import StartStop from "../components/StartStop";
+} from '../utils/utils';
+import ToggleFlags from '../components/ToggleFlags';
+import KeyToggle from '../components/KeyToggle';
+import KeyBox from '../components/KeyBox';
+import { NavigationEvents } from 'react-navigation';
+import StartStop from '../components/StartStop';
 
 export default class HomeScreen extends React.Component {
   state = {
@@ -56,35 +51,35 @@ export default class HomeScreen extends React.Component {
       keyModal,
       isLoading
     } = this.state;
-    const chosenRoute = navigation.getParam("decodedPoly", []);
+    const chosenRoute = navigation.getParam('decodedPoly', []);
     return (
       <View
         style={{
           flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
+          alignItems: 'center',
+          justifyContent: 'center',
           paddingTop: Constants.statusBarHeight,
-          backgroundColor: "#ffffff"
+          backgroundColor: '#ffffff'
         }}
       >
         {isLoading ? (
           <View
             style={{
-              height: "100%",
-              width: "100%",
-              justifyContent: "center",
-              alignItems: "center"
+              height: '100%',
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center'
             }}
           >
-            <ActivityIndicator size={"large"} color="#3cc1c7" />
+            <ActivityIndicator size={'large'} color="#3cc1c7" />
           </View>
         ) : (
           <View
             style={{
               flex: 1,
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "#ffffff"
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: '#ffffff'
             }}
           >
             <NavigationEvents
@@ -99,8 +94,9 @@ export default class HomeScreen extends React.Component {
               followsUserLocation={gettingLocation}
               rotateEnabled={false}
               showsUserLocation={true}
+              pitchEnabled={false}
               style={{
-                width: Dimensions.get("window").width,
+                width: Dimensions.get('window').width,
                 flex: 1
               }}
               region={mapRegion}
@@ -111,7 +107,6 @@ export default class HomeScreen extends React.Component {
                 strokeColor="#000000"
                 strokeWidth={6}
               />
-
               <Polyline
                 coordinates={chosenRoute}
                 strokeColor="#0066FF"
@@ -147,21 +142,14 @@ export default class HomeScreen extends React.Component {
   }
 
   componentWillMount() {
-    if (Platform.OS === "android" && !Constants.isDevice) {
-      this.setState({
-        errorMessage:
-          "Oops, this will not work on Sketch in an Android emulator. Try it on your device!"
-      });
-    } else {
-      this.getLocationAsync();
-    }
+    this.getLocationAsync();
   }
 
   getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status !== "granted") {
+    if (status !== 'granted') {
       this.setState({
-        errorMessage: "Permission to access location was denied"
+        errorMessage: 'Permission to access location was denied'
       });
     }
 
@@ -247,7 +235,7 @@ export default class HomeScreen extends React.Component {
         } else {
           this.locationUpdateWatcher.remove();
           if (actualRoute.length > 3) {
-            this.props.navigation.navigate("FirstQuestion", {
+            this.props.navigation.navigate('FirstQuestion', {
               actualRoute,
               existingFlags
             });

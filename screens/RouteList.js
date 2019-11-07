@@ -18,23 +18,19 @@ export default class RouteList extends React.Component {
   };
 
   buttons = ['All Routes', 'My Routes'];
+
   updateIndex = () => {
     const newIndex = this.state.selectedIndex === 0 ? 1 : 0;
-    this.setState(
-      currentState => {
-        return { selectedIndex: newIndex, loading: true };
-      },
-      () => {
-        this.state.selectedIndex === 0
-          ? this.getCurrentLocation(false)
-          : this.getCurrentLocation(true);
-      }
-    );
+    this.setState({ selectedIndex: newIndex, loading: true }, () => {
+      this.state.selectedIndex === 0
+        ? this.getCurrentLocation(false)
+        : this.getCurrentLocation(true);
+    });
   };
 
   render() {
     const { navigation } = this.props;
-    const { routes } = this.state;
+    const { routes, selectedIndex, loading } = this.state;
     const distanceUnit = navigation.getParam('unit', 'km');
     isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
       return (
@@ -52,19 +48,16 @@ export default class RouteList extends React.Component {
         >
           <ButtonGroup
             onPress={this.updateIndex}
-            selectedIndex={this.state.selectedIndex}
+            selectedIndex={selectedIndex}
             buttons={this.buttons}
             selectedButtonStyle={{ backgroundColor: '#3cc1c7' }}
           />
 
-          {this.state.selectedIndex === 0 ? (
+          {selectedIndex === 0 ? (
             <ScrollView
-              scrollEventThrottle='8'
+              scrollEventThrottle="8"
               onScroll={({ nativeEvent }) => {
-                if (
-                  isCloseToBottom(nativeEvent) &&
-                  this.state.loading === false
-                ) {
+                if (isCloseToBottom(nativeEvent) && loading === false) {
                   this.handleBottom();
                 }
               }}
@@ -81,7 +74,6 @@ export default class RouteList extends React.Component {
             >
               <NavigationEvents
                 onDidFocus={() => {
-                  console.log('all routes');
                   this.getCurrentLocation(false);
                 }}
               />
@@ -95,18 +87,13 @@ export default class RouteList extends React.Component {
                   />
                 );
               })}
-              {this.state.loading && (
-                <ActivityIndicator size={'large'} color='#3cc1c7' />
-              )}
+              {loading && <ActivityIndicator size={'large'} color="#3cc1c7" />}
             </ScrollView>
           ) : (
             <ScrollView
-              scrollEventThrottle='8'
+              scrollEventThrottle="8"
               onScroll={({ nativeEvent }) => {
-                if (
-                  isCloseToBottom(nativeEvent) &&
-                  this.state.loading === false
-                ) {
+                if (isCloseToBottom(nativeEvent) && loading === false) {
                   this.handleBottom();
                 }
               }}
@@ -122,7 +109,6 @@ export default class RouteList extends React.Component {
             >
               <NavigationEvents
                 onDidFocus={() => {
-                  console.log('my routes');
                   this.getCurrentLocation(true);
                 }}
               />
@@ -136,9 +122,7 @@ export default class RouteList extends React.Component {
                   />
                 );
               })}
-              {this.state.loading && (
-                <ActivityIndicator size={'large'} color='#3cc1c7' />
-              )}
+              {loading && <ActivityIndicator size={'large'} color="#3cc1c7" />}
             </ScrollView>
           )}
         </View>
