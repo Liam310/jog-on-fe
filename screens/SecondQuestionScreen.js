@@ -51,7 +51,6 @@ export default class SecondQuestionScreen extends React.Component {
               );
             }
           )}
-
           {navigation
             .getParam('existingFlags')
             .map(({ latitude, longitude, flag_type_id }, index) => {
@@ -186,6 +185,7 @@ export default class SecondQuestionScreen extends React.Component {
       };
     });
   };
+
   handleUndoPress = () => {
     this.setState(currentState => {
       const latestRemoved = currentState.flags.slice(0, -1);
