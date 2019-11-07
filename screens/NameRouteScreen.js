@@ -47,17 +47,15 @@ export default class NameRouteScreen extends React.Component {
             strokeColor="#000000"
             strokeWidth={6}
           />
-          {this.state.flags.map(
-            ({ latitude, longitude, flag_type_id }, index) => {
-              return (
-                <Marker
-                  coordinate={{ latitude, longitude }}
-                  key={index}
-                  image={flagRef[flag_type_id]}
-                />
-              );
-            }
-          )}
+          {flags.map(({ latitude, longitude, flag_type_id }, index) => {
+            return (
+              <Marker
+                coordinate={{ latitude, longitude }}
+                key={index}
+                image={flagRef[flag_type_id]}
+              />
+            );
+          })}
         </MapView>
         <View
           style={{
@@ -102,9 +100,9 @@ export default class NameRouteScreen extends React.Component {
               onChangeText={actualRouteName =>
                 this.setState({ actualRouteName })
               }
-              value={this.state.actualRouteName}
+              value={actualRouteName}
             />
-            {this.state.routeNameError && (
+            {routeNameError && (
               <View
                 style={{
                   width: '75%',
@@ -122,7 +120,7 @@ export default class NameRouteScreen extends React.Component {
                     fontSize: 15
                   }}
                 >
-                  {this.state.routeNameError}
+                  {routeNameError}
                 </Text>
               </View>
             )}
@@ -135,7 +133,7 @@ export default class NameRouteScreen extends React.Component {
           >
             <TouchableHighlight
               onPress={() => {
-                if (this.state.actualRouteName.length < 4) {
+                if (actualRouteName.length < 4) {
                   this.setState({
                     routeNameError:
                       'Route name required - must be more than 3 characters'
@@ -143,7 +141,7 @@ export default class NameRouteScreen extends React.Component {
                 } else {
                   this.handleRoutePosting();
                   navigation.navigate('ConfirmRouteAdded', {
-                    actualRouteName: this.state.actualRouteName
+                    actualRouteName: actualRouteName
                   });
                 }
               }}
