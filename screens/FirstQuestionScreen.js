@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, Dimensions, TouchableHighlight } from 'react-native';
 import MapView, { Polyline, Marker } from 'react-native-maps';
 import Constants from 'expo-constants';
-import MudPin from '../assets/mapPins/MudPinScaled.png';
+import MudMarker from '../assets/mapMarkers/MudMarker.png';
 import flagRef from '../utils/flagRefObj';
 import { convertRouteToRegion } from '../utils/utils';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -60,7 +60,7 @@ export default class FirstQuestionScreen extends React.Component {
                   <Marker
                     coordinate={{ latitude, longitude }}
                     key={index}
-                    image={MudPin}
+                    image={MudMarker}
                     opacity={0.5}
                   />
                 );

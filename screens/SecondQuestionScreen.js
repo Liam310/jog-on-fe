@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, Dimensions, TouchableHighlight } from 'react-native';
 import MapView, { Polyline, Marker } from 'react-native-maps';
 import Constants from 'expo-constants';
-import DarkPin from '../assets/mapPins/DarkPinScaled.png';
+import LightingMarker from '../assets/mapMarkers/LightingMarker.png';
 import flagRef from '../utils/flagRefObj';
 import { convertRouteToRegion } from '../utils/utils';
 import { findNearest } from 'geolib';
@@ -60,7 +60,7 @@ export default class SecondQuestionScreen extends React.Component {
                   <Marker
                     coordinate={{ latitude, longitude }}
                     key={index}
-                    image={DarkPin}
+                    image={LightingMarker}
                     opacity={0.5}
                   />
                 );
