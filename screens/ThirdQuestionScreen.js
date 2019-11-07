@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, Dimensions, TouchableHighlight } from 'react-native';
 import MapView, { Polyline, Marker } from 'react-native-maps';
 import Constants from 'expo-constants';
-import GonePin from '../assets/mapPins/GonePinScaled.png';
+import FootpathMarker from '../assets/mapMarkers/FootpathMarker.png';
 import flagRef from '../utils/flagRefObj';
 import { convertRouteToRegion } from '../utils/utils';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -60,7 +60,7 @@ export default class ThirdQuestionScreen extends React.Component {
                   <Marker
                     coordinate={{ latitude, longitude }}
                     key={index}
-                    image={GonePin}
+                    image={FootpathMarker}
                     opacity={0.5}
                   />
                 );
