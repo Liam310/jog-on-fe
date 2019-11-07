@@ -66,24 +66,6 @@ export default class NameRouteScreen extends React.Component {
             bottom: 30
           }}
         >
-          {/* <View
-            style={{
-              position: 'absolute',
-              top: 15 + Constants.statusBarHeight,
-              borderRadius: 5,
-              backgroundColor: '#3cc1c7',
-              marginLeft: 15,
-              marginRight: 15,
-              paddingLeft: 15,
-              paddingRight: 15,
-              paddingTop: 10,
-              paddingBottom: 10
-            }}
-          >
-            <Text style={{ color: 'white', fontSize: 20 }}>
-              Please enter a name for your route :)
-            </Text>
-          </View> */}
           <View style={{ alignItems: 'center' }}>
             <TextInput
               style={{
