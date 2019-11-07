@@ -1,13 +1,6 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Modal,
-  TouchableHighlight,
-  TextInput
-} from 'react-native';
-import { Input, ButtonGroup } from 'react-native-elements';
+import { Text, View, Modal, TouchableHighlight, TextInput } from 'react-native';
+import { ButtonGroup } from 'react-native-elements';
 import Constants from 'expo-constants';
 import Amplify, { Auth } from 'aws-amplify';
 import * as api from '../utils/api';
@@ -21,41 +14,39 @@ export default class UserAuthScreen extends React.Component {
     modalVisible: false,
     selectedIndex: 0
   };
+
   buttons = ['Sign Up', 'Sign In'];
+
   updateIndex = () => {
-    // If selectedIndex was 0, make it 1.  If it was 1, make it 0
     const newIndex = this.state.selectedIndex === 0 ? 1 : 0;
     this.setState({ selectedIndex: newIndex });
   };
+
   handleSignIn = () => {
     const { email, password } = this.state;
     Auth.signIn(email, password)
       .then(() => {
         this.setState({ password: '' });
       })
-      // If we are successful, navigate to Home screen
-      .then(user => this.props.navigation.navigate('TabNavigator'))
-      // On failure, display error in console
+      .then(() => this.props.navigation.navigate('TabNavigator'))
       .catch(err => console.log(err));
   };
+
   handleSignUp = () => {
-    // alert(JSON.stringify(this.state));
     const { email, password, confirmPassword } = this.state;
-    // Make sure passwords match
     if (password === confirmPassword) {
       Auth.signUp({
         username: email,
         password,
         attributes: { email }
       })
-        // On success, show Confirmation Code Modal
         .then(() => this.setState({ modalVisible: true }))
-        // On failure, display error in console
         .catch(err => console.log(err));
     } else {
       alert('Passwords do not match.');
     }
   };
+
   handleConfirmationCode = () => {
     const { email, password, confirmationCode } = this.state;
     Auth.confirmSignUp(email, confirmationCode, {})
@@ -82,6 +73,12 @@ export default class UserAuthScreen extends React.Component {
   };
 
   render() {
+    const {
+      selectedIndex,
+      password,
+      confirmPassword,
+      modalVisible
+    } = this.state;
     return (
       <View
         style={{
@@ -91,11 +88,11 @@ export default class UserAuthScreen extends React.Component {
       >
         <ButtonGroup
           onPress={this.updateIndex}
-          selectedIndex={this.state.selectedIndex}
+          selectedIndex={selectedIndex}
           buttons={this.buttons}
           selectedButtonStyle={{ backgroundColor: '#3cc1c7' }}
         />
-        {this.state.selectedIndex === 0 ? (
+        {selectedIndex === 0 ? (
           <View
             style={{
               marginTop: 20,
@@ -140,7 +137,7 @@ export default class UserAuthScreen extends React.Component {
                 onChangeText={value => this.setState({ password: value })}
                 placeholder="p@ssw0rd123"
                 secureTextEntry
-                value={this.state.password}
+                value={password}
               ></TextInput>
             </View>
             <View style={{ width: '90%' }}>
@@ -162,7 +159,7 @@ export default class UserAuthScreen extends React.Component {
                 }
                 placeholder="p@ssw0rd123"
                 secureTextEntry
-                value={this.state.confirmPassword}
+                value={confirmPassword}
               ></TextInput>
             </View>
             <View style={{ alignItems: 'center' }}>
@@ -194,8 +191,15 @@ export default class UserAuthScreen extends React.Component {
                 </View>
               </TouchableHighlight>
             </View>
-            <Modal visible={this.state.modalVisible}>
-              <View style={styles.container}>
+            <Modal visible={modalVisible}>
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: '#fff',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
                 <View style={{ width: '90%' }}>
                   <Text style={{ fontSize: 18 }}>Confirmation Code</Text>
                   <TextInput
@@ -291,7 +295,7 @@ export default class UserAuthScreen extends React.Component {
                 onChangeText={value => this.setState({ password: value })}
                 placeholder="p@ssw0rd123"
                 secureTextEntry
-                value={this.state.password}
+                value={password}
               ></TextInput>
             </View>
 
@@ -329,6 +333,7 @@ export default class UserAuthScreen extends React.Component {
       </View>
     );
   }
+
   componentDidMount() {
     Auth.currentAuthenticatedUser()
       .then(() => {
@@ -339,12 +344,3 @@ export default class UserAuthScreen extends React.Component {
       });
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-});
