@@ -21,6 +21,7 @@ export default class NameRouteScreen extends React.Component {
     routeNameError: null
   };
   render() {
+    const { flags, actualRouteName, routeNameError } = this.state;
     const { navigation } = this.props;
     return (
       <View
