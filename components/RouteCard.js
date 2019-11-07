@@ -42,7 +42,7 @@ const DistFlagWrap = styled.View`
 `;
 
 const RouteCard = ({
-  route: { route_id, name, length_in_km, flag_type_ids, poly },
+  route: { name, length_in_km, flag_type_ids, poly },
   distanceUnit,
   handleRouteSelect
 }) => {
