@@ -1,13 +1,13 @@
-import DarkPin from '../assets/mapPins/DarkPinScaled.png';
-import GonePin from '../assets/mapPins/GonePinScaled.png';
-import MiscPin from '../assets/mapPins/MiscPinScaled.png';
-import MudPin from '../assets/mapPins/MudPinScaled.png';
-import WetPin from '../assets/mapPins/WetPinScaled.png';
+import MudMarker from '../assets/mapMarkers/MudMarker.png';
+import LightingMarker from '../assets/mapMarkers/LightingMarker.png';
+import FootpathMarker from '../assets/mapMarkers/FootpathMarker.png';
+import WaterMarker from '../assets/mapMarkers/WaterMarker.png';
+import MiscMarker from '../assets/mapMarkers/MiscMarker.png';
 
 export default flagRef = {
-  1: MudPin,
-  2: DarkPin,
-  3: GonePin,
-  4: WetPin,
-  5: MiscPin
+  1: MudMarker,
+  2: LightingMarker,
+  3: FootpathMarker,
+  4: WaterMarker,
+  5: MiscMarker
 };
