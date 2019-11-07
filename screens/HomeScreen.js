@@ -107,7 +107,6 @@ export default class HomeScreen extends React.Component {
                 strokeColor="#000000"
                 strokeWidth={6}
               />
-
               <Polyline
                 coordinates={chosenRoute}
                 strokeColor="#0066FF"
@@ -143,14 +142,7 @@ export default class HomeScreen extends React.Component {
   }
 
   componentWillMount() {
-    if (Platform.OS === 'android' && !Constants.isDevice) {
-      this.setState({
-        errorMessage:
-          'Oops, this will not work on Sketch in an Android emulator. Try it on your device!'
-      });
-    } else {
-      this.getLocationAsync();
-    }
+    this.getLocationAsync();
   }
 
   getLocationAsync = async () => {
